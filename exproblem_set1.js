@@ -7,6 +7,29 @@ let timeLimit = 30 * 60;
 // タイマーID
 let timerInterval = null;
 
+// 状態保存
+const autoSaveState = () => {
+  localStorage.setItem("exAnswers", JSON.stringify(answers));
+  localStorage.setItem("exCurrent", current.toString());
+  localStorage.setItem("exTimeLeft", timeLimit.toString());
+};
+
+// 状態復元
+const loadSavedState = () => {
+  const savedAnswers = localStorage.getItem("exAnswers");
+  const savedCurrent = localStorage.getItem("exCurrent");
+  const savedTime = localStorage.getItem("exTimeLeft");
+
+  if (savedAnswers) {
+    const parsed = JSON.parse(savedAnswers);
+    for (let i = 0; i < total; i++) {
+      answers[i] = parsed[i] || "";
+    }
+  }
+  if (savedCurrent) current = parseInt(savedCurrent);
+  if (savedTime) timeLimit = parseInt(savedTime);
+};
+
 // ユーザーの回答配列（空文字で初期化）
 const answers = Array(total).fill("");
 // 問題ごとの配点（例）
@@ -104,7 +127,7 @@ const calculateScore = (userAnswers) => {
   }, 0);
 };
 
-// 試験終了処理
+// 試験終了時の保存と遷移
 const finishExam = () => {
   saveCurrentAnswer();
   const username = document.getElementById("username-input")?.value || "名無し";
@@ -113,24 +136,15 @@ const finishExam = () => {
   localStorage.setItem("exScore", score);
   localStorage.setItem("exAnswers", JSON.stringify(answers));
   localStorage.setItem("exSetName", "謎検模試セット1");
+
+  // 自動保存状態をクリア
+  localStorage.removeItem("exCurrent");
+  localStorage.removeItem("exTimeLeft");
+
   alert("試験終了です。結果画面に遷移します。");
   location.href = "exresult.html";
 };
 
-// 終了確認モーダル表示
-const confirmAndFinish = () => {
-  const overlay = document.getElementById("confirm-overlay");
-  overlay.style.display = "flex";
-  document.getElementById("confirm-yes").onclick = () => {
-    overlay.style.display = "none";
-    finishExam();
-  };
-  document.getElementById("confirm-no").onclick = () => {
-    overlay.style.display = "none";
-  };
-};
-
-// 時間切れ時処理
 const timeUp = () => {
   saveCurrentAnswer();
   const username = document.getElementById("username-input")?.value || "名無し";
@@ -139,14 +153,23 @@ const timeUp = () => {
   localStorage.setItem("exScore", score);
   localStorage.setItem("exAnswers", JSON.stringify(answers));
   localStorage.setItem("exSetName", "謎検模試セット1");
+
+  // 自動保存状態をクリア
+  localStorage.removeItem("exCurrent");
+  localStorage.removeItem("exTimeLeft");
+
   alert("時間切れです。結果画面に移動します。");
   location.href = "exresult.html";
 };
 
 window.onload = () => {
+  loadSavedState(); // ← 保存状態を読み込む
   loadQuestion();
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
+
+  // 自動保存（5秒ごと）
+  setInterval(autoSaveState, 5000); // ← 状態を自動保存
 
   document.getElementById("answer").addEventListener("input", () => {
     saveCurrentAnswer();
