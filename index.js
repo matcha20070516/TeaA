@@ -19,26 +19,29 @@ function start() {
         let count = parseInt(localStorage.getItem("exAttemptCount") || "0", 10);
         count += 1;
         localStorage.setItem("exAttemptCount", count);
-
+        
         const exKeysToClear = [
           "exUsername",
           "exSetName",
-          "exAnswers",
-          "exScore",
+          "exAnswers",    
+          "exScore",  
           "exTimeLimit",
           "exElapsedTime",
           "exStartTime",
           "exProgress",
-          "exCurrentPage"
+          "exCurrentPage",
+          "exCurrent"
         ];
         exKeysToClear.forEach(key => localStorage.removeItem(key));
-
+        
+        localStorage.setItem("exFreshStart", "true");  // ←★これを追加！
         alert(`新しく始めます。（${count}回目の挑戦）`);
       } else {
         alert("前回のデータで続行します。");
       }
     } else {
       localStorage.setItem("exAttemptCount", "1");
+      localStorage.setItem("exFreshStart", "true");
       alert("模試を始めます。（1回目の挑戦）");
     }
 
