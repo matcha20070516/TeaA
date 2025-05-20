@@ -61,6 +61,9 @@ const updateTimer = () => {
   document.getElementById("timer").textContent =
     `${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
   timeLimit--;
+  // 経過時間保存（制限30分 = 1800秒として）
+  const elapsed = (30 * 60) - timeLimit;
+  localStorage.setItem("exElapsedTime", elapsed);
 };
 
 // 問題表示更新
@@ -174,6 +177,8 @@ window.onload = () => {
   loadQuestion();
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
+
+  const savedElapsed = parseInt(localStorage.getItem("exElapsedTime") || "0", 10);
 
   // 自動保存（5秒ごと）
   setInterval(autoSaveState, 1000); // ← 状態を自動保存
