@@ -14,7 +14,7 @@ const timer = setInterval(() => {
         clearInterval(timer);
 
         // セッションから選択されたセットを取得
-        const selectedSet = sessionStorage.getItem('setName');
+        const selectedSet = sessionStorage.getItem('exSetName');
 
         // 選択されたセットに応じて遷移先を決定
         let targetPage = '';
