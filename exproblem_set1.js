@@ -1,36 +1,10 @@
-// 問題総数
-const total = 20;  
-let current = parseInt(localStorage.getItem("exCountPage") || "1", 10);
-// 制限時間（秒）
-let timeLimit = 30 * 60;
-// タイマーID
-let timerInterval = null;
+const total = 20;
+let current = 1;
+let timeLimit = 30 * 60; // 制限時間：30分（秒）
 
-// 状態保存
-const autoSaveState = () => {
-  localStorage.setItem("exAnswers", JSON.stringify(answers));
-  localStorage.setItem("exCurrent", current.toString());
-  localStorage.setItem("exTimeLeft", timeLimit.toString());
-};
-
-// 状態復元
-const loadSavedState = () => {
-  const savedAnswers = localStorage.getItem("exAnswers");
-  const savedCurrent = localStorage.getItem("exCurrent");
-  const savedTime = localStorage.getItem("exTimeLeft");
-
-  if (savedAnswers) {
-    const parsed = JSON.parse(savedAnswers);
-    for (let i = 0; i < total; i++) {
-      answers[i] = parsed[i] || "";
-    }
-  }
-  if (savedCurrent) current = parseInt(savedCurrent);
-  if (savedTime) timeLimit = parseInt(savedTime);
-};
-
-// ユーザーの回答配列（空文字で初期化）
+// 回答配列（空で初期化）
 const answers = Array(total).fill("");
+
 // 問題ごとの配点（例）
 const pointsPerQuestion = [
   3, 5, 4, 6, 2,
@@ -46,7 +20,31 @@ const correctAnswers = [
   "答え16", "答え17", "答え18", "答え19", "答え20"
 ];
 
-// タイマー更新
+// タイマーID
+let timerInterval = null;
+
+// 🔶 新規スタート判定
+const isFreshStart = localStorage.getItem("exFreshStart") === "true";
+if (isFreshStart) {
+  localStorage.removeItem("exFreshStart");
+  localStorage.removeItem("exCurrent");
+  localStorage.removeItem("exElapsedTime");
+  localStorage.removeItem("exAnswers");
+  // current = 1, timeLimit = 1800 そのまま
+} else {
+  const savedCurrent = parseInt(localStorage.getItem("exCurrent") || "1", 10);
+  current = savedCurrent;
+
+  const savedElapsed = parseInt(localStorage.getItem("exElapsedTime") || "0", 10);
+  timeLimit -= savedElapsed;
+
+  const savedAnswers = JSON.parse(localStorage.getItem("exAnswers") || "[]");
+  for (let i = 0; i < savedAnswers.length; i++) {
+    answers[i] = savedAnswers[i] || "";
+  }
+}
+
+// タイマー表示
 const updateTimer = () => {
   if (timeLimit <= 0) {
     clearInterval(timerInterval);
@@ -57,30 +55,38 @@ const updateTimer = () => {
   const m = Math.floor(timeLimit / 60);
   const s = timeLimit % 60;
   document.getElementById("timer").textContent =
-    `${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
+    `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   timeLimit--;
-  // 経過時間保存（制限30分 = 1800秒として）
+
+  // 経過時間を保存
   const elapsed = (30 * 60) - timeLimit;
   localStorage.setItem("exElapsedTime", elapsed);
 };
 
-// 問題表示更新
+// 回答・ページ状態の自動保存
+const autoSaveState = () => {
+  localStorage.setItem("exAnswers", JSON.stringify(answers));
+  localStorage.setItem("exCurrent", current.toString());
+  localStorage.setItem("exTimeLeft", timeLimit.toString());
+};
+
+// 問題表示
 const loadQuestion = () => {
   document.getElementById("question-num").textContent = `第${current}問`;
   document.getElementById("quiz-img").src = `q${current}.png`;
-  document.getElementById("answer").value = answers[current - 1];
+  document.getElementById("answer").value = answers[current - 1] || "";
   document.getElementById("answer").disabled = false;
   updateNavButtons();
   updateChapters();
 };
 
-// ナビボタン表示切替
+// ナビボタン
 const updateNavButtons = () => {
   document.getElementById("back-btn").style.visibility = current > 1 ? "visible" : "hidden";
   document.getElementById("forward-btn").style.visibility = current < total ? "visible" : "hidden";
 };
 
-// チャプター（問題番号）ボタン更新
+// チャプター更新
 const updateChapters = () => {
   const chapterContainer = document.getElementById("chapters");
   chapterContainer.innerHTML = "";
@@ -92,86 +98,72 @@ const updateChapters = () => {
     if (answers[i].trim() !== "") btn.classList.add("answered");
     btn.onclick = () => {
       saveCurrentAnswer();
-      const saveCurrentPage = () => {
-        localStorage.setItem("exCurrentPage", current);
-      };
       current = i + 1;
-      saveCurrentPage();
+      localStorage.setItem("exCurrent", current.toString());
       loadQuestion();
     };
     chapterContainer.appendChild(btn);
   }
 };
 
-// 戻るボタン
+// ボタン操作
 const back = () => {
   saveCurrentAnswer();
   if (current > 1) {
     current--;
-    saveCurrentPage();
+    localStorage.setItem("exCurrent", current.toString());
     loadQuestion();
   }
 };
 
-// 進むボタン
 const forward = () => {
   saveCurrentAnswer();
   if (current < total) {
     current++;
-    saveCurrentPage();
+    localStorage.setItem("exCurrent", current.toString());
     loadQuestion();
   }
 };
 
-// 現在の回答保存
+// 回答保存
 const saveCurrentAnswer = () => {
   answers[current - 1] = document.getElementById("answer").value.trim();
 };
 
 // スコア計算
 const calculateScore = (userAnswers) => {
-  return userAnswers.reduce((score, ans, idx) => {
-    return score + (ans === correctAnswers[idx] ? pointsPerQuestion[idx] : 0);
-  }, 0);
+  return userAnswers.reduce((score, ans, idx) =>
+    score + (ans === correctAnswers[idx] ? pointsPerQuestion[idx] : 0), 0);
 };
 
-// 試験終了時の保存と遷移
-const finishExam = () => {
+// 試験終了処理（共通）
+const handleExamEnd = (message) => {
   saveCurrentAnswer();
   const username = document.getElementById("username-input")?.value || "名無し";
   const score = calculateScore(answers);
+
   localStorage.setItem("exUsername", username);
   localStorage.setItem("exScore", score);
   localStorage.setItem("exAnswers", JSON.stringify(answers));
   localStorage.setItem("exSetName", "謎検模試セット1");
 
-  // 自動保存状態をクリア
+  // 終了時に保存データを整理
   localStorage.removeItem("exCurrent");
   localStorage.removeItem("exTimeLeft");
 
-  alert("試験終了です。結果画面に遷移します。");
+  alert(message);
   location.href = "exresult.html";
 };
 
-const timeUp = () => {
-  saveCurrentAnswer();
-  const username = document.getElementById("username-input")?.value || "名無し";
-  const score = calculateScore(answers);
-  localStorage.setItem("exUsername", username);
-  localStorage.setItem("exScore", score);
-  localStorage.setItem("exAnswers", JSON.stringify(answers));
-  localStorage.setItem("exSetName", "謎検模試セット1");
-
-  // 自動保存状態をクリア
-  localStorage.removeItem("exCurrent");
-  localStorage.removeItem("exTimeLeft");
-
-  alert("時間切れです。結果画面に移動します。");
-  location.href = "exresult.html";
+// 手動終了・時間切れ
+const confirmAndFinish = () => {
+  document.getElementById("confirm-overlay").style.display = "flex";
 };
+const timeUp = () => handleExamEnd("時間切れです。結果画面に移動します。");
+const finishExam = () => handleExamEnd("試験終了です。結果画面に遷移します。");
 
+// 起動時処理
 window.onload = () => {
-  loadSavedState();
   loadQuestion();
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
@@ -182,27 +174,11 @@ window.onload = () => {
     updateChapters();
   });
 
-  // 終了ボタンの処理
-  const submitBtn = document.getElementById("submit-btn");
-  const confirmOverlay = document.getElementById("confirm-overlay");
-  const confirmYes = document.getElementById("confirm-yes");
-  const confirmNo = document.getElementById("confirm-no");
+  document.getElementById("submit-btn").onclick = confirmAndFinish;
 
-  if (submitBtn && confirmOverlay && confirmYes && confirmNo) {
-    // 終了ボタンを押すとポップアップ表示
-    submitBtn.onclick = () => {
-      confirmOverlay.style.display = "flex";
-    };
-
-    // 「終了する」→ finishExam 実行
-    confirmYes.onclick = () => {
-      confirmOverlay.style.display = "none";
-      finishExam();
-    };
-
-    // 「キャンセル」→ ポップアップ閉じる
-    confirmNo.onclick = () => {
-      confirmOverlay.style.display = "none";
-    };
-  }
+  // ポップアップ対応
+  document.getElementById("confirm-yes").onclick = finishExam;
+  document.getElementById("confirm-no").onclick = () => {
+    document.getElementById("confirm-overlay").style.display = "none";
+  };
 };
