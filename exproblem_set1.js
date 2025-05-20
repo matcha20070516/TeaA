@@ -184,7 +184,11 @@ window.onload = () => {
     saveCurrentAnswer();
     updateChapters();
   });
-
+  const confirmAndFinish = () => {
+  if (confirm("終了してもよろしいですか？")) {
+    finishExam();
+  }
+};
   const submitBtn = document.getElementById("submit-btn");
   if (submitBtn) submitBtn.onclick = confirmAndFinish;
 };
