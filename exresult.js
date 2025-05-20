@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // HTMLに反映
   document.getElementById("username").textContent = username;
   document.getElementById("score").textContent = score;
-  document.getElementById("attemptCountDisplay").textContent = '${attemptCount}回目'
+  document.getElementById("attemptCountDisplay").textContent = `${attemptCount}回目`;
 
   // （必要であればセット名も表示）
   const setNameElement = document.getElementById("setname");
