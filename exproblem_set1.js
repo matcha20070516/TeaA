@@ -172,8 +172,6 @@ const timeUp = () => {
 
 window.onload = () => {
   loadSavedState();
-  const savedElapsed = parseInt(localStorage.getItem("exElapsedTime") || "0", 10);
-  timeLimit -= savedElapsed;
   loadQuestion();
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
