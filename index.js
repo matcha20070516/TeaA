@@ -16,17 +16,28 @@ function start() {
     if (hasOldData) {
       const continueOld = confirm("以前のデータが残っています。続けますか？「OK」で続行、「キャンセル」で新しく始めます。");
       if (!continueOld) {
-        localStorage.removeItem("exAnswers");
-        localStorage.removeItem("exUsername");
-        localStorage.removeItem("exSetName");
-        localStorage.removeItem("exScore");
-        localStorage.removeItem("exTimeLimit");
-        // 必要なものがあれば追加で削除
-        alert("新しく始めます。");
+        let count = parseInt(localStarage.getItem("exAttemptCount") || "0", 10);
+        count += 1;
+        localStorage.setItem("exAttemptCount", count);
+        const exKeysToClear = [
+          "exUsername",
+          "exSetName",
+          "exAnswers",
+          "exScore",
+          "exTimeLimit",
+          "exElapsedTime",
+          "exStartTime",
+          "exProgress",
+          "exCurrentPage"
+        ];
+        exKeysToClear.forEach(key => localStorage.removeItem(key));
+        alert("新しく始めます。(${count}回目の挑戦)");
       } else {
         alert("前回のデータで続行します。");
       }
-    }
+    } else {
+      localStorage.setItem("exAttemptCount", "1");
+      alert("模試を始めます。（1回目の挑戦）")
 
     // 新旧どちらでも、localStorageに再保存（上書き）しておく
     localStorage.setItem("exUsername", name);
