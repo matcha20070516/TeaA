@@ -2,7 +2,6 @@
 // ページ読み込み時に実行
 window.addEventListener("DOMContentLoaded", () => {
   // localStorageから取得（デフォルト値も指定）
-  const username = localStorage.getItem("exUsername") || "名無し";
   const score = localStorage.getItem("exScore") || "0";
   const setName = localStorage.getItem("exSetName") || "謎検模試セット";
   const attemptCount = localStorage.getItem("exAttemptCount") || "1";
