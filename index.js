@@ -19,12 +19,12 @@ function start() {
         let count = parseInt(localStorage.getItem("exAttemptCount") || "0", 10);
         count += 1;
         localStorage.setItem("exAttemptCount", count);
-        
+
         const exKeysToClear = [
           "exUsername",
           "exSetName",
-          "exAnswers",    
-          "exScore",  
+          "exAnswers",
+          "exScore",
           "exTimeLimit",
           "exElapsedTime",
           "exStartTime",
@@ -33,8 +33,8 @@ function start() {
           "exCurrent"
         ];
         exKeysToClear.forEach(key => localStorage.removeItem(key));
-        
-        localStorage.setItem("exFreshStart", "true");  // ←★これを追加！
+
+        localStorage.setItem("exFreshStart", "true");
         alert(`新しく始めます。（${count}回目の挑戦）`);
       } else {
         alert("前回のデータで続行します。");
@@ -45,13 +45,13 @@ function start() {
       alert("模試を始めます。（1回目の挑戦）");
     }
 
+    // ✅ 保存して即遷移（←ここだけ変更！）
     localStorage.setItem("exUsername", name);
     localStorage.setItem("exSetName", set);
+    window.location.href = "exrule.html";
 
-    setTimeout(() => {
-      window.location.href = "exrule.html";
-    }, 100);
   } else {
+    // 通常モード（模試以外）
     sessionStorage.setItem("playerName", name);
     sessionStorage.setItem("setName", set);
     window.location.href = "rule.html";
