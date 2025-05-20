@@ -16,26 +16,13 @@ function start() {
     if (hasOldData) {
       const continueOld = confirm("以前のデータが残っています。続けますか？「OK」で続行、「キャンセル」で新しく始めます。");
       if (!continueOld) {
-        // カウント更新
         let count = parseInt(localStorage.getItem("exAttemptCount") || "0", 10);
         count += 1;
         localStorage.setItem("exAttemptCount", count);
-
-        // すべての模試データを初期化
-        const exKeysToClear = [
-          "exUsername",
-          "exSetName",
-          "exAnswers",
-          "exScore",
-          "exTimeLimit",
-          "exElapsedTime",
-          "exStartTime",      // ← これが残ってると時間がズレる
-          "exProgress",
-          "exCurrentPage"
-        ];
+        // 完全初期化：模試に関するすべてのkeyを削除
+        const exKeysToClear = Object.keys(localStorage).filter(key => key.startsWith("ex"));
         exKeysToClear.forEach(key => localStorage.removeItem(key));
-
-        alert(`新しく始めます（${count}回目の挑戦）。`);
+        alert(`新しく始めます（${count}回目の挑戦）`);
       } else {
         alert("前回のデータで続行します。");
       }
