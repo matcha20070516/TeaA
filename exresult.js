@@ -4,10 +4,12 @@ window.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("exUsername") || "名無し";
   const score = localStorage.getItem("exScore") || "0";
   const setName = localStorage.getItem("exSetName") || "謎検模試セット";
+  const attemptCount = localStorage.getItem("exAttemptCount") || "1";
 
   // HTMLに反映
   document.getElementById("username").textContent = username;
   document.getElementById("score").textContent = score;
+  document.getElementById("attemptCountDisplay").textContent = '${attemptCount}回目'
 
   // （必要であればセット名も表示）
   const setNameElement = document.getElementById("setname");
