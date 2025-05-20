@@ -171,24 +171,40 @@ const timeUp = () => {
 };
 
 window.onload = () => {
-  loadSavedState(); // ← 保存状態を読み込む
+  loadSavedState();
   const savedElapsed = parseInt(localStorage.getItem("exElapsedTime") || "0", 10);
-  timeLimit -= savedElapsed
+  timeLimit -= savedElapsed;
   loadQuestion();
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
-  // 自動保存（5秒ごと）
-  setInterval(autoSaveState, 1000); // ← 状態を自動保存
+  setInterval(autoSaveState, 1000);
 
   document.getElementById("answer").addEventListener("input", () => {
     saveCurrentAnswer();
     updateChapters();
   });
-  const confirmAndFinish = () => {
-  if (confirm("終了してもよろしいですか？")) {
-    finishExam();
-  }
-};
+
+  // 終了ボタンの処理
   const submitBtn = document.getElementById("submit-btn");
-  if (submitBtn) submitBtn.onclick = confirmAndFinish;
+  const confirmOverlay = document.getElementById("confirm-overlay");
+  const confirmYes = document.getElementById("confirm-yes");
+  const confirmNo = document.getElementById("confirm-no");
+
+  if (submitBtn && confirmOverlay && confirmYes && confirmNo) {
+    // 終了ボタンを押すとポップアップ表示
+    submitBtn.onclick = () => {
+      confirmOverlay.style.display = "flex";
+    };
+
+    // 「終了する」→ finishExam 実行
+    confirmYes.onclick = () => {
+      confirmOverlay.style.display = "none";
+      finishExam();
+    };
+
+    // 「キャンセル」→ ポップアップ閉じる
+    confirmNo.onclick = () => {
+      confirmOverlay.style.display = "none";
+    };
+  }
 };
