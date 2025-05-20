@@ -32,7 +32,7 @@ function start() {
           "exCurrentPage"
         ];
         exKeysToClear.forEach(key => localStorage.removeItem(key));
-        alert("新しく始めます。('${count}'回目の挑戦)");
+        alert("新しく始めます。('${count}回目の挑戦)');
       } else {
         alert("前回のデータで続行します。");
       }
