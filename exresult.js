@@ -1,12 +1,3 @@
-function log(msg) {
-  const logDiv = document.getElementById("debugLog");
-  if (logDiv) {
-    logDiv.textContent += msg + "\n";
-  } else {
-    console.log(msg);
-  }
-}
-
 
 // ページ読み込み時に実行
 window.addEventListener("DOMContentLoaded", () => {
@@ -16,12 +7,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const setName = localStorage.getItem("exSetName") || "謎検模試セット";
   const attemptCount = localStorage.getItem("exAttemptCount") || "1";
   
-  // デバッグログ出力
-  log("Debug: username = " + username);
-  log("Debug: setName = " + setName);
-  log("Debug: score = " + score);
-  log("Debug: attemptCount = " + 
-
   // HTMLに反映
   document.getElementById("username").textContent = username;
   document.getElementById("score").textContent = score;
