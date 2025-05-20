@@ -169,7 +169,7 @@ window.onload = () => {
   timerInterval = setInterval(updateTimer, 1000);
 
   // 自動保存（5秒ごと）
-  setInterval(autoSaveState, 5000); // ← 状態を自動保存
+  setInterval(autoSaveState, 1000); // ← 状態を自動保存
 
   document.getElementById("answer").addEventListener("input", () => {
     saveCurrentAnswer();
