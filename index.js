@@ -1,5 +1,3 @@
-// index.js
-
 function start() {
   const name = document.getElementById("name").value.trim();
   const set = document.getElementById("set").value;
@@ -10,18 +8,36 @@ function start() {
   }
 
   if (set.includes("謎検模試")) {
-    // 謎検模試モードはlocalStorageに保存
+    const hasOldData =
+      localStorage.getItem("exAnswers") ||
+      localStorage.getItem("exUsername") ||
+      localStorage.getItem("exSetName");
+
+    if (hasOldData) {
+      const continueOld = confirm("以前のデータが残っています。続けますか？「OK」で続行、「キャンセル」で新しく始めます。");
+      if (!continueOld) {
+        localStorage.removeItem("exAnswers");
+        localStorage.removeItem("exUsername");
+        localStorage.removeItem("exSetName");
+        localStorage.removeItem("exScore");
+        localStorage.removeItem("exTimeLimit");
+        // 必要なものがあれば追加で削除
+        alert("新しく始めます。");
+      } else {
+        alert("前回のデータで続行します。");
+      }
+    }
+
+    // 新旧どちらでも、localStorageに再保存（上書き）しておく
     localStorage.setItem("exUsername", name);
     localStorage.setItem("exSetName", set);
+
+    window.location.href = "exrule.html";
+
   } else {
-    // 通常モードはsessionStorageに保存
+    // 通常のモード（sessionStorageを使う）
     sessionStorage.setItem("playerName", name);
     sessionStorage.setItem("setName", set);
-  }
-
-  if (set.includes("謎検模試")) {
-    window.location.href = "exrule.html";
-  } else {
     window.location.href = "rule.html";
   }
 }
