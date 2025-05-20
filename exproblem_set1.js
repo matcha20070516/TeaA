@@ -1,7 +1,7 @@
 // 問題総数
 const total = 20;
 // 現在の問題番号（1スタート）
-let current = 1;
+let current = parseInt(localStorage.getItem("exCurrentPage") || "1", 10);
 // 制限時間（秒）
 let timeLimit = 30 * 60;
 // タイマーID
@@ -67,7 +67,11 @@ const updateChapters = () => {
     if (answers[i].trim() !== "") btn.classList.add("answered");
     btn.onclick = () => {
       saveCurrentAnswer();
+      const saveCurrentPage = () => {
+        localStorage.setItem("exCurrentPage", current);
+      };
       current = i + 1;
+      saveCurrentPage();
       loadQuestion();
     };
     chapterContainer.appendChild(btn);
@@ -79,6 +83,7 @@ const back = () => {
   saveCurrentAnswer();
   if (current > 1) {
     current--;
+    saveCurrentPage();
     loadQuestion();
   }
 };
@@ -88,6 +93,7 @@ const forward = () => {
   saveCurrentAnswer();
   if (current < total) {
     current++;
+    saveCurrentPage();
     loadQuestion();
   }
 };
