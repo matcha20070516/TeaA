@@ -48,7 +48,9 @@ function start() {
     localStorage.setItem("exUsername", name);
     localStorage.setItem("exSetName", set);
 
-    window.location.href = "exrule.html";
+    setTimeout(() => {
+      window.location.href = "exrule.html";
+    }, 100);
   } else {
     sessionStorage.setItem("playerName", name);
     sessionStorage.setItem("setName", set);
