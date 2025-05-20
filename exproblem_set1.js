@@ -1,8 +1,6 @@
 // 問題総数
 const total = 20;  
 let current = parseInt(localStorage.getItem("exCountPage") || "1", 10);
-// 現在の問題番号（1スタート）
-let current = 1;
 // 制限時間（秒）
 let timeLimit = 30 * 60;
 // タイマーID
@@ -174,12 +172,11 @@ const timeUp = () => {
 
 window.onload = () => {
   loadSavedState(); // ← 保存状態を読み込む
+  const savedElapsed = parseInt(localStorage.getItem("exElapsedTime") || "0", 10);
+  timeLimit -= savedElapsed
   loadQuestion();
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
-
-  const savedElapsed = parseInt(localStorage.getItem("exElapsedTime") || "0", 10);
-
   // 自動保存（5秒ごと）
   setInterval(autoSaveState, 1000); // ← 状態を自動保存
 
