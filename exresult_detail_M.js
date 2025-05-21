@@ -17,30 +17,26 @@ window.onload = () => {
   let correctCount = 0;
 
   for (let i = 0; i < correctAnswers.length; i++) {
-  const tr = document.createElement("tr");
+    const tr = document.createElement("tr");
 
-  const userAns = answers[i] || "";
-  const isCorrect = userAns === correctAnswers[i];
+    const userAns = answers[i] || "";
+    const isCorrect = userAns === correctAnswers[i];
 
-  if (isCorrect) {
-    tr.classList.add("correct");
-    totalScore += pointsPerQuestion[i];
-    correctCount++;
-  } else {
-    tr.classList.add("incorrect");
-  }
+    if (isCorrect) {
+      tr.classList.add("correct");
+      totalScore += pointsPerQuestion[i];
+      correctCount++;
+    } else {
+      tr.classList.add("incorrect");
+    }
 
-  tr.innerHTML = `
+    tr.innerHTML = `
     <td>第${i + 1}問</td>
     <td>${userAns || "（無記入）"}</td>
     <td>${correctAnswers[i]}</td>
     <td>${pointsPerQuestion[i]}</td>
-  `;
-  tbody.appendChild(tr);
-    if (isCorrect) {
-      totalScore += pointsPerQuestion[i];
-      correctCount++;
-    }
+    `;
+    tbody.appendChild(tr);
   }
 
   document.getElementById("result-summary").textContent = `正解数：${correctCount} / ${correctAnswers.length} 問, 合計得点：${totalScore} 点`;
