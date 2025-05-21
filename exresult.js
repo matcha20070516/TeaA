@@ -1,6 +1,4 @@
 window.addEventListener("DOMContentLoaded", () => {
-  // 結果画面に到達 → 確定済みマークを保存
-localStorage.setItem("exResultLocked", "true");
   // localStorageから取得（デフォルト値も指定）
   const username = localStorage.getItem("exUsername") || "名無し"; // ←これを追加！
   const score = localStorage.getItem("exScore") || "0";
