@@ -232,7 +232,6 @@ tr.correct {
 tr.incorrect {
   background-color: #f8d7da; /* 薄い赤 */
 }
-
 .answer-container input {
   width: 100%;
   padding: 10px;
@@ -246,12 +245,14 @@ tr.incorrect {
   justify-content: space-between;
   align-items: center;
   margin-top: 6px;
+  flex-wrap: wrap;
 }
 
 #answer-format {
   color: #666;
   font-size: 0.9rem;
   user-select: none;
+  margin-right: 10px;
 }
 
 .submit-btn {
