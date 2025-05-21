@@ -141,15 +141,14 @@
 
     <!-- 解答欄 -->
     <div class="answer-container">
-      <input type="text" id="answer" placeholder="答えを入力" autocomplete="off" />
+      <input type="text" id="answer" autocomplete="off" />
     </div>
-
-    <!-- 解答欄の下に「解答形式：〜」と終了ボタン -->
+    
+    <!-- 解答形式と終了ボタンの横並び表示 -->
     <div class="answer-bottom">
-      <span id="answer-format"><strong>解答形式：</strong>※ 半角英数字で入力してください</span>
+      <div class="answer-format">解答形式：半角英数字で入力してください</div>
       <button id="submit-btn" class="submit-btn">終了</button>
     </div>
-
   <!-- 終了確認ポップアップ -->
   <div id="confirm-overlay" style="
     display: none;
