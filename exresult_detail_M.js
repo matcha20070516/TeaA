@@ -12,10 +12,6 @@ window.onload = () => {
     3, 5, 4, 6, 2,
     3, 5, 4, 6, 2
   ];
-  const username = localStorage.getItem("exUsername") || "名無し";
-
-  document.getElementById("username").textContent = `受験者名：${username}`;
-
   const tbody = document.querySelector("#detail-table tbody");
   let totalScore = 0;
   let correctCount = 0;
