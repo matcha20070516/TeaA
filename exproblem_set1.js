@@ -145,7 +145,7 @@ const calculateScore = (userAnswers) => {
 
 const handleExamEnd = (message) => {
   saveCurrentAnswer();
-  const username = localStorage.getItem("exUsername") || "名無し";
+  const username = document.getElementById("username-input")?.value || "名無し";
   const score = calculateScore(answers);
 
   localStorage.setItem("exUsername", username);
@@ -169,10 +169,6 @@ const timeUp = () => handleExamEnd("時間切れです。結果画面に移動�
 const finishExam = () => handleExamEnd("試験終了です。結果画面に遷移します。");
 
 window.onload = () => {
-  // ユーザー名表示
-  const username = localStorage.getItem("exUsername") || "名無し";
-  document.getElementById("username-display").textContent = username;
-
   // ロックメッセージ表示
   if (isLocked()) {
     const lockNotice = document.createElement("p");
@@ -197,7 +193,4 @@ window.onload = () => {
   document.getElementById("confirm-no").onclick = () => {
     document.getElementById("confirm-overlay").style.display = "none";
   };
-
-  document.getElementById("back-btn").onclick = back;
-  document.getElementById("forward-btn").onclick = forward;
 };
