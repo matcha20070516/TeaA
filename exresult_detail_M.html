@@ -5,46 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>謎検模試 結果詳細</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    max-width: 700px;
-    margin: auto;
-  }
-  h1 {
-    text-align: center;
-  }
-  #result-summary {
-    font-weight: bold;
-    margin-bottom: 20px;
-    font-size: 1.2em;
-  }
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 40px;
-  }
-  th, td {
-    border: 1px solid #666;
-    padding: 8px;
-    text-align: center;
-  }
-  tr.incorrect {
-    background-color: #f8d7da; /* 薄い赤 */
-  }
-  #explanation {
-    text-align: center;
-    margin-top: 20px;
-  }
-  #explanation a {
-    font-weight: bold;
-    font-size: 1.2em;
-    color: #007acc;
-    text-decoration: none;
-  }
-  #explanation a:hover {
-    text-decoration: underline;
-  }
+  body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: auto; }
+  h1 { text-align: center; }
+  #result-summary { font-weight: bold; margin-bottom: 20px; font-size: 1.2em; text-align:center; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 40px; }
+  th, td { border: 1px solid #666; padding: 8px; text-align: center; }
+  tr.incorrect { background-color: #f8d7da; }
+  #explanation { text-align: center; margin-top: 20px; }
+  #explanation a { font-weight: bold; font-size: 1.2em; color: #007acc; text-decoration: none; }
+  #explanation a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -62,14 +31,14 @@
       <th>配点</th>
     </tr>
   </thead>
-  <tbody>
-    <!-- ここにJSで行が入る -->
-  </tbody>
+  <tbody></tbody>
 </table>
 
-<!-- 解説（セット単位） -->
 <section id="explanation">
-  <div id="explanation">
-    <a href="https://note.com/your_note_link" target="_blank" rel="noopener noreferrer">解答・解説ページ</a>
-  </div>
+  <a href="https://note.com/your_note_link" target="_blank" rel="noopener noreferrer">解答・解説ページ</a>
 </section>
+
+<script src="exresult_detail.js"></script>
+
+</body>
+</html>
