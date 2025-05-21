@@ -30,7 +30,7 @@ function start() {
           "exStartTime",
           "exProgress",
           "exCurrentPage",
-          "exCurrent"
+          "exCurrent",
           "exResultLocked"
         ];
         exKeysToClear.forEach(key => localStorage.removeItem(key));
