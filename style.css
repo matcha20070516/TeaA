@@ -232,30 +232,42 @@ tr.correct {
 tr.incorrect {
   background-color: #f8d7da; /* 薄い赤 */
 }
-.answer-container input {
-  width: 100%;
-  padding: 10px;
-  font-size: 1.2rem;
-  box-sizing: border-box;
-  margin-top: 12px;
+.answer-container {
+  margin-top: 16px;
 }
 
+.answer-container input {
+  width: 100%;
+  font-size: 1rem;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* 横並びにするコンテナ */
 .answer-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 6px;
-  flex-wrap: wrap;
+  margin-top: 12px;
 }
 
-#answer-format {
+/* 左の解答形式 */
+.answer-format {
   color: #666;
   font-size: 0.9rem;
   user-select: none;
-  margin-right: 10px;
 }
 
+/* 右の終了ボタン */
 .submit-btn {
+  background: #5da3fa;
+  color: white;
+  border: none;
   padding: 8px 16px;
-  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #3c84e6;
 }
