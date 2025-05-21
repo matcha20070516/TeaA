@@ -164,6 +164,18 @@ const finishExam = () => handleExamEnd("試験終了です。結果画面に遷�
 
 // 起動時処理
 window.onload = () => {
+  // 🔒 ロック確認（exResultLocked が true のとき回答を不可にする）
+  const isLocked = localStorage.getItem("exResultLocked") === "true";
+  if (isLocked) {
+    document.getElementById("answer").disabled = true;
+    document.getElementById("submit-btn").disabled = true;
+
+    const lockNotice = document.createElement("p");
+    lockNotice.textContent = "この模試の結果は確定済みです。解答を変更できません。";
+    lockNotice.style.color = "red";
+    document.querySelector(".quiz-area")?.prepend(lockNotice); // 適切な場所に挿入
+  }
+
   loadQuestion();
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
