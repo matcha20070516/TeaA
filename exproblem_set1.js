@@ -176,7 +176,6 @@ const loadQuestion = () => {
   // 🔒 ロック状態なら入力不可に
   if (isLocked) {
     document.getElementById("answer").disabled = true;
-    document.getElementById("submit-btn").disabled = true;
   } else {
     document.getElementById("answer").disabled = false;
   }
