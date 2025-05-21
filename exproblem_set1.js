@@ -4,12 +4,15 @@ let timeLimit = 30 * 60; // 制限時間：30分（秒）
 
 const answers = Array(total).fill("");
 
+// 問題ごとの配点
 const pointsPerQuestion = [
   3, 5, 4, 6, 2,
   3, 5, 4, 6, 2,
   3, 5, 4, 6, 2,
   3, 5, 4, 6, 2
 ];
+
+// 問題ごとの正解
 const correctAnswers = [
   "答え1", "答え2", "答え3", "答え4", "答え5",
   "答え6", "答え7", "答え8", "答え9", "答え10",
@@ -17,9 +20,17 @@ const correctAnswers = [
   "答え16", "答え17", "答え18", "答え19", "答え20"
 ];
 
+// 問題ごとの解答形式（ここを変えれば個別設定可能）
+const answerFormats = [
+  "ひらがな", "カタカナ", "漢字", "半角英数", "数字",
+  "ひらがな", "カタカナ", "漢字", "半角英数", "数字",
+  "ひらがな", "カタカナ", "漢字", "半角英数", "数字",
+  "ひらがな", "カタカナ", "漢字", "半角英数", "数字"
+];
+
 let timerInterval = null;
 
-// 🔒 ロック状態を関数で判定
+// ロック判定関数
 const isLocked = () => localStorage.getItem("exResultLocked") === "true";
 
 // 新規スタート判定
@@ -70,7 +81,11 @@ const loadQuestion = () => {
   document.getElementById("quiz-img").src = `q${current}.png`;
   document.getElementById("answer").value = answers[current - 1] || "";
 
-  // 🔒 ロック時は入力不可
+  // ここで解答形式表示も更新
+  const formatSpan = document.getElementById("answer-format");
+  formatSpan.textContent = answerFormats[current - 1] || "";
+
+  // ロック時は入力不可
   document.getElementById("answer").disabled = isLocked();
 
   updateNavButtons();
@@ -154,7 +169,7 @@ const timeUp = () => handleExamEnd("時間切れです。結果画面に移動�
 const finishExam = () => handleExamEnd("試験終了です。結果画面に遷移します。");
 
 window.onload = () => {
-  // 🔒 ロックメッセージ表示
+  // ロックメッセージ表示
   if (isLocked()) {
     const lockNotice = document.createElement("p");
     lockNotice.textContent = "この模試の結果は確定済みです。解答を変更できません。";
