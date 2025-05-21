@@ -147,6 +147,8 @@ const handleExamEnd = (message) => {
   localStorage.setItem("exAnswers", JSON.stringify(answers));
   localStorage.setItem("exSetName", "謎検模試セット1");
 
+  localStorage.setItem("exResultLocked", "true");
+
   // 終了時に保存データを整理
   localStorage.removeItem("exCurrent");
   localStorage.removeItem("exTimeLeft");
