@@ -138,32 +138,20 @@
       <img id="quiz-img" src="q1.png" alt="問題画像" style="max-width: 80%; height: auto;">
       <span id="forward-btn" class="nav-btn" onclick="forward()">▷</span>
     </div>
+<!-- 解答欄と終了ボタン+解答形式を横並びに -->
+<div class="answer-area">
+  <input 
+    type="text" 
+    id="answer" 
+    autocomplete="off" 
+    placeholder="答えを入力" 
+  />
 
-    <!-- 解答欄と終了ボタン+解答形式を横並びに -->
-    <div style="display: flex; align-items: center; gap: 10px;">
-
-      <!-- 解答欄は横いっぱいに -->
-      <input 
-        type="text" 
-        id="answer" 
-        autocomplete="off" 
-        placeholder="答えを入力" 
-        style="flex-grow: 1; padding: 8px; font-size: 1rem;"
-      />
-
-      <!-- 解答形式は終了ボタンの横の余白に表示 -->
-      <div style="display: flex; flex-direction: column; align-items: flex-start; min-width: 120px;">
-        <button 
-          id="submit-btn" 
-          class="submit-btn" 
-          style="padding: 8px 12px; font-size: 1rem; cursor: pointer; margin-bottom: 4px;"
-        >
-          終了
-        </button>
-        <span id="answer-format" style="color: #666; user-select: none; font-size: 0.9rem;">
-          ※ 半角英数字で入力してください
-        </span>
-      </div>
+  <div class="submit-area">
+    <button id="submit-btn">終了</button>
+    <span id="answer-format">※ 半角英数字で入力してください</span>
+  </div>
+</div>
     </div>
   </div>
 
