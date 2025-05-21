@@ -2,17 +2,14 @@ const total = 20;
 let current = 1;
 let timeLimit = 30 * 60; // 制限時間：30分（秒）
 
-// 回答配列（空で初期化）
 const answers = Array(total).fill("");
 
-// 問題ごとの配点（例）
 const pointsPerQuestion = [
   3, 5, 4, 6, 2,
   3, 5, 4, 6, 2,
   3, 5, 4, 6, 2,
   3, 5, 4, 6, 2
 ];
-// 正解の配列（例）
 const correctAnswers = [
   "答え1", "答え2", "答え3", "答え4", "答え5",
   "答え6", "答え7", "答え8", "答え9", "答え10",
@@ -20,17 +17,18 @@ const correctAnswers = [
   "答え16", "答え17", "答え18", "答え19", "答え20"
 ];
 
-// タイマーID
 let timerInterval = null;
 
-// 🔶 新規スタート判定
+// 🔒 ロック状態を関数で判定
+const isLocked = () => localStorage.getItem("exResultLocked") === "true";
+
+// 新規スタート判定
 const isFreshStart = localStorage.getItem("exFreshStart") === "true";
 if (isFreshStart) {
   localStorage.removeItem("exFreshStart");
   localStorage.removeItem("exCurrent");
   localStorage.removeItem("exElapsedTime");
   localStorage.removeItem("exAnswers");
-  // current = 1, timeLimit = 1800 そのまま
 } else {
   const savedCurrent = parseInt(localStorage.getItem("exCurrent") || "1", 10);
   current = savedCurrent;
@@ -44,7 +42,6 @@ if (isFreshStart) {
   }
 }
 
-// タイマー表示
 const updateTimer = () => {
   if (timeLimit <= 0) {
     clearInterval(timerInterval);
@@ -58,35 +55,33 @@ const updateTimer = () => {
     `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   timeLimit--;
 
-  // 経過時間を保存
   const elapsed = (30 * 60) - timeLimit;
   localStorage.setItem("exElapsedTime", elapsed);
 };
 
-// 回答・ページ状態の自動保存
 const autoSaveState = () => {
   localStorage.setItem("exAnswers", JSON.stringify(answers));
   localStorage.setItem("exCurrent", current.toString());
   localStorage.setItem("exTimeLeft", timeLimit.toString());
 };
 
-// 問題表示
 const loadQuestion = () => {
   document.getElementById("question-num").textContent = `第${current}問`;
   document.getElementById("quiz-img").src = `q${current}.png`;
   document.getElementById("answer").value = answers[current - 1] || "";
-  document.getElementById("answer").disabled = false;
+
+  // 🔒 ロック時は入力不可
+  document.getElementById("answer").disabled = isLocked();
+
   updateNavButtons();
   updateChapters();
 };
 
-// ナビボタン
 const updateNavButtons = () => {
   document.getElementById("back-btn").style.visibility = current > 1 ? "visible" : "hidden";
   document.getElementById("forward-btn").style.visibility = current < total ? "visible" : "hidden";
 };
 
-// チャプター更新
 const updateChapters = () => {
   const chapterContainer = document.getElementById("chapters");
   chapterContainer.innerHTML = "";
@@ -106,7 +101,6 @@ const updateChapters = () => {
   }
 };
 
-// ボタン操作
 const back = () => {
   saveCurrentAnswer();
   if (current > 1) {
@@ -125,18 +119,15 @@ const forward = () => {
   }
 };
 
-// 回答保存
 const saveCurrentAnswer = () => {
   answers[current - 1] = document.getElementById("answer").value.trim();
 };
 
-// スコア計算
 const calculateScore = (userAnswers) => {
   return userAnswers.reduce((score, ans, idx) =>
     score + (ans === correctAnswers[idx] ? pointsPerQuestion[idx] : 0), 0);
 };
 
-// 試験終了処理（共通）
 const handleExamEnd = (message) => {
   saveCurrentAnswer();
   const username = document.getElementById("username-input")?.value || "名無し";
@@ -149,7 +140,6 @@ const handleExamEnd = (message) => {
 
   localStorage.setItem("exResultLocked", "true");
 
-  // 終了時に保存データを整理
   localStorage.removeItem("exCurrent");
   localStorage.removeItem("exTimeLeft");
 
@@ -157,44 +147,22 @@ const handleExamEnd = (message) => {
   location.href = "exresult.html";
 };
 
-// 手動終了・時間切れ
 const confirmAndFinish = () => {
   document.getElementById("confirm-overlay").style.display = "flex";
 };
 const timeUp = () => handleExamEnd("時間切れです。結果画面に移動します。");
 const finishExam = () => handleExamEnd("試験終了です。結果画面に遷移します。");
 
-// ロック状態判定（グローバルに持っておく）
-const isLocked = localStorage.getItem("exResultLocked") === "true";
-
-// 問題表示（loadQuestion）の中にもロック処理を追加
-const loadQuestion = () => {
-  document.getElementById("question-num").textContent = `第${current}問`;
-  document.getElementById("quiz-img").src = `q${current}.png`;
-  document.getElementById("answer").value = answers[current - 1] || "";
-
-  // 🔒 ロック状態なら入力不可に
-  if (isLocked) {
-    document.getElementById("answer").disabled = true;
-  } else {
-    document.getElementById("answer").disabled = false;
-  }
-
-  updateNavButtons();
-  updateChapters();
-};
-
-// 起動時処理
 window.onload = () => {
-  // 🔒 ロック表示（文言だけの挿入）
-  if (isLocked) {
+  // 🔒 ロックメッセージ表示
+  if (isLocked()) {
     const lockNotice = document.createElement("p");
     lockNotice.textContent = "この模試の結果は確定済みです。解答を変更できません。";
     lockNotice.style.color = "red";
     document.querySelector(".quiz-area")?.prepend(lockNotice);
   }
 
-  loadQuestion(); // ←ここでロック状態に応じて制御される
+  loadQuestion();
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
   setInterval(autoSaveState, 1000);
@@ -206,7 +174,6 @@ window.onload = () => {
 
   document.getElementById("submit-btn").onclick = confirmAndFinish;
 
-  // ポップアップ対応
   document.getElementById("confirm-yes").onclick = finishExam;
   document.getElementById("confirm-no").onclick = () => {
     document.getElementById("confirm-overlay").style.display = "none";
