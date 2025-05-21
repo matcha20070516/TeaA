@@ -164,21 +164,38 @@ const confirmAndFinish = () => {
 const timeUp = () => handleExamEnd("時間切れです。結果画面に移動します。");
 const finishExam = () => handleExamEnd("試験終了です。結果画面に遷移します。");
 
-// 起動時処理
-window.onload = () => {
-  // 🔒 ロック確認（exResultLocked が true のとき回答を不可にする）
-  const isLocked = localStorage.getItem("exResultLocked") === "true";
+// ロック状態判定（グローバルに持っておく）
+const isLocked = localStorage.getItem("exResultLocked") === "true";
+
+// 問題表示（loadQuestion）の中にもロック処理を追加
+const loadQuestion = () => {
+  document.getElementById("question-num").textContent = `第${current}問`;
+  document.getElementById("quiz-img").src = `q${current}.png`;
+  document.getElementById("answer").value = answers[current - 1] || "";
+
+  // 🔒 ロック状態なら入力不可に
   if (isLocked) {
     document.getElementById("answer").disabled = true;
     document.getElementById("submit-btn").disabled = true;
+  } else {
+    document.getElementById("answer").disabled = false;
+  }
 
+  updateNavButtons();
+  updateChapters();
+};
+
+// 起動時処理
+window.onload = () => {
+  // 🔒 ロック表示（文言だけの挿入）
+  if (isLocked) {
     const lockNotice = document.createElement("p");
     lockNotice.textContent = "この模試の結果は確定済みです。解答を変更できません。";
     lockNotice.style.color = "red";
-    document.querySelector(".quiz-area")?.prepend(lockNotice); // 適切な場所に挿入
+    document.querySelector(".quiz-area")?.prepend(lockNotice);
   }
 
-  loadQuestion();
+  loadQuestion(); // ←ここでロック状態に応じて制御される
   updateTimer();
   timerInterval = setInterval(updateTimer, 1000);
   setInterval(autoSaveState, 1000);
