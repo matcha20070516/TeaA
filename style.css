@@ -225,3 +225,10 @@ button:hover {
   border: none;
   cursor: pointer;
 }
+
+tr.correct {
+  background-color: #d4edda; /* 薄い緑 */
+}
+tr.incorrect {
+  background-color: #f8d7da; /* 薄い赤 */
+}
