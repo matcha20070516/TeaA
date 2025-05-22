@@ -265,6 +265,69 @@ tr.incorrect {
   object-fit: contain;
   display: block;
   border: 2px solid #555; /* ← 枠線の色と太さ */
-  border-radius: 8px;      /* ← 角を少し丸く（お好み） */
   background-color: white; /* ← 背景色も入れると見やすくなる */
+}
+
+/* question-box: ナビゲーション＋画像を縦に並べる */
+.question-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+/* 正方形画像枠＋整列 */
+#question-area {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1 / 1;
+  border: 2px solid #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f9f9f9;
+  overflow: hidden;
+  margin: 10px auto;
+}
+
+#quiz-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ナビゲーションボタン */
+.nav-btn {
+  font-size: 2em;
+  color: #5da3fa;
+  cursor: pointer;
+  user-select: none;
+  margin: 5px;
+}
+
+/* answer-area: 縦に整列＆中央寄せ */
+.answer-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.answer-area input[type="text"] {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 1.1em;
+  border-radius: 8px
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.submit-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
