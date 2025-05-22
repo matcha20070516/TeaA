@@ -278,18 +278,17 @@ tr.incorrect {
   flex-wrap: nowrap;
 }
 
-/* 正方形枠を保ちつつ中央配置 */
+
 #question-area {
   width: 100%;
   max-width: 300px;
   aspect-ratio: 1 / 1;
   border: 2px solid #333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block; /* ←ここ重要！ */
   background: #f9f9f9;
-  overflow: hidden;
   border-radius: 8px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* 画像サイズ安定 */
