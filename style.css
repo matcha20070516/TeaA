@@ -276,6 +276,8 @@ tr.incorrect {
   gap: 10px;
   margin-bottom: 16px;
   flex-wrap: nowrap;
+  height: 100%;
+  object-fit: contain;
 }
 
 
@@ -289,11 +291,7 @@ tr.incorrect {
   border-radius: 8px;
   overflow: hidden;
   box-sizing: border-box;
-}
-
-/* 画像サイズ安定 */
-#quiz-img {
-  width: 100%;
+} 
   height: 100%;
   object-fit: contain;
 }
