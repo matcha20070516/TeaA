@@ -4,7 +4,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const setName = localStorage.getItem("exSetName") || "謎検模試セット";
   const attemptCount = localStorage.getItem("exAttemptCount") || "1";
 
-  document.getElementById("username").textContent = name;
+  document.getElementById("username").textContent = username;
   document.getElementById("score").textContent = score;
   document.getElementById("attemptCountDisplay").textContent = `${attemptCount}回目`;
   document.getElementById("setname").textContent = setName;
