@@ -143,24 +143,26 @@ const calculateScore = (userAnswers) => {
     score + (ans === correctAnswers[idx] ? pointsPerQuestion[idx] : 0), 0);
 };
 
-const handleExamEnd = (message) => {
-  saveCurrentAnswer();
-  const username = document.getElementById("username-input")?.value || "名無し";
-  const score = calculateScore(answers);
+const username =
+  document.getElementById("username-input")?.value ||
+  localStorage.getItem("exUsername") ||
+  "名無し";
 
-  localStorage.setItem("exUsername", username);
-  localStorage.setItem("exScore", score);
-  localStorage.setItem("exAnswers", JSON.stringify(answers));
-  localStorage.setItem("exSetName", "謎検模試セット1");
+const setName = localStorage.getItem("exSetName") || "謎検模試セット";
 
-  localStorage.setItem("exResultLocked", "true");
+const score = calculateScore(answers);
 
-  localStorage.removeItem("exCurrent");
-  localStorage.removeItem("exTimeLeft");
+localStorage.setItem("exUsername", username);
+localStorage.setItem("exScore", score);
+localStorage.setItem("exAnswers", JSON.stringify(answers));
+localStorage.setItem("exSetName", setName);
+localStorage.setItem("exResultLocked", "true");
 
-  alert(message);
-  location.href = "exresult.html";
-};
+localStorage.removeItem("exCurrent");
+localStorage.removeItem("exTimeLeft");
+
+alert(message);
+location.href = "exresult.html";
 
 const confirmAndFinish = () => {
   document.getElementById("confirm-overlay").style.display = "flex";
