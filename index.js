@@ -8,54 +8,43 @@ function start() {
   }
 
   if (set.includes("謎検模試")) {
-    // そのセットのデータが残っているかチェック
-    const savedSet = localStorage.getItem("exSetName");
-    const hasDataForThisSet =
-      savedSet === set &&
-      (localStorage.getItem("exAnswers") ||
-       localStorage.getItem("exUsername") ||
-       localStorage.getItem("exScore"));
+    const prefix = `ex_${set}`;  // 例: ex_謎検模試セット1
 
-    if (hasDataForThisSet) {
-      const continueOld = confirm("以前このセットのデータが残っています。続けますか？「OK」で続行、「キャンセル」で新しく始めます。");
+    const hasOldData =
+      localStorage.getItem(`${prefix}_Answers`) ||
+      localStorage.getItem(`${prefix}_Username`) ||
+      localStorage.getItem(`${prefix}_SetName`);
+
+    if (hasOldData) {
+      const continueOld = confirm("以前のデータが残っています。このセットで続けますか？「OK」で続行、「キャンセル」で新しく始めます。");
       if (!continueOld) {
-        let count = parseInt(localStorage.getItem("exAttemptCount") || "0", 10);
+        let count = parseInt(localStorage.getItem(`${prefix}_AttemptCount`) || "0", 10);
         count += 1;
-        localStorage.setItem("exAttemptCount", count);
+        localStorage.setItem(`${prefix}_AttemptCount`, count);
 
         const exKeysToClear = [
-          "exUsername",
-          "exSetName",
-          "exAnswers",
-          "exScore",
-          "exTimeLimit",
-          "exElapsedTime",
-          "exStartTime",
-          "exProgress",
-          "exCurrentPage",
-          "exCurrent",
-          "exResultLocked"
+          "Username", "SetName", "Answers", "Score", "TimeLimit",
+          "ElapsedTime", "StartTime", "Progress", "CurrentPage", "Current", "ResultLocked"
         ];
-        exKeysToClear.forEach(key => localStorage.removeItem(key));
+        exKeysToClear.forEach(key => localStorage.removeItem(`${prefix}_${key}`));
 
-        localStorage.setItem("exFreshStart", "true");
+        localStorage.setItem(`${prefix}_FreshStart`, "true");
         alert(`新しく始めます。（${count}回目の挑戦）`);
       } else {
         alert("前回のデータで続行します。");
       }
     } else {
-      localStorage.setItem("exAttemptCount", "1");
-      localStorage.setItem("exFreshStart", "true");
+      localStorage.setItem(`${prefix}_AttemptCount`, "1");
+      localStorage.setItem(`${prefix}_FreshStart`, "true");
       alert("模試を始めます。（1回目の挑戦）");
     }
 
-    // ✅ 保存して即遷移
-    localStorage.setItem("exUsername", name);
-    localStorage.setItem("exSetName", set);
+    localStorage.setItem(`${prefix}_Username`, name);
+    localStorage.setItem(`${prefix}_SetName`, set);
+    localStorage.setItem("currentExamSet", set);  // ← どのセットを開いているかを覚えておく
     window.location.href = "exrule.html";
 
   } else {
-    // 通常モード（模試以外）
     sessionStorage.setItem("playerName", name);
     sessionStorage.setItem("setName", set);
     window.location.href = "rule.html";
