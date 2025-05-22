@@ -1,11 +1,8 @@
 window.addEventListener("DOMContentLoaded", () => {
-  // 使用するセット名を取得し、キーのprefixとして使う
-  const setName = localStorage.getItem("currentExamSet") || "謎検模試セット1";
-  const prefix = `ex_${setName}`;
-
-  const username = localStorage.getItem(`${prefix}_Username`) || "名無し";
-  const score = localStorage.getItem(`${prefix}_Score`) || "0";
-  const attemptCount = localStorage.getItem(`${prefix}_AttemptCount`) || "1";
+  const username = localStorage.getItem("exUsername") || "名無し";
+  const score = localStorage.getItem("exScore") || "0";
+  const setName = localStorage.getItem("exSetName") || "謎検模試セット";
+  const attemptCount = localStorage.getItem("exAttemptCount") || "1";
 
   document.getElementById("username").textContent = username;
   document.getElementById("score").textContent = score;
@@ -18,7 +15,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
   document.getElementById("share-link").href = tweetUrl;
 
-  // 詳細ページのリンク先をセット名で分岐
+  // detailリンクの設定もここで
   let detailPage = "exresult_detail_M.html"; // デフォルト
   if (setName.includes("ろい")) {
     detailPage = "exresult_detail_ろい.html";
