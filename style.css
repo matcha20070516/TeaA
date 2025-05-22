@@ -268,16 +268,17 @@ tr.incorrect {
   background-color: white; /* ← 背景色も入れると見やすくなる */
 }
 
-/* question-box: ナビゲーション＋画像を縦に並べる */
+/* ◁ 画像 ▷ を横並び＋中央揃え */
 .question-box {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 16px;
+  flex-wrap: nowrap;
 }
 
-/* 正方形画像枠＋整列 */
+/* 正方形枠を保ちつつ中央配置 */
 #question-area {
   width: 100%;
   max-width: 300px;
@@ -288,25 +289,25 @@ tr.incorrect {
   align-items: center;
   background: #f9f9f9;
   overflow: hidden;
-  margin: 10px auto;
+  border-radius: 8px;
 }
 
+/* 画像サイズ安定 */
 #quiz-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-/* ナビゲーションボタン */
+/* ◁▷ ボタン */
 .nav-btn {
   font-size: 2em;
   color: #5da3fa;
   cursor: pointer;
   user-select: none;
-  margin: 5px;
 }
 
-/* answer-area: 縦に整列＆中央寄せ */
+/* 解答エリアを中央＆縦積みに */
 .answer-area {
   display: flex;
   flex-direction: column;
@@ -320,7 +321,7 @@ tr.incorrect {
   max-width: 300px;
   padding: 10px;
   font-size: 1.1em;
-  border-radius: 8px
+  border-radius: 8px;
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
