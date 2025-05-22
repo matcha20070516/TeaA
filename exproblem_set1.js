@@ -49,6 +49,8 @@ const updateTimer = () => {
   localStorage.setItem(`${prefix}_ElapsedTime`, elapsed);
 };
 
+const timerInterval = setInterval(updateTimer, 1000);
+
 const autoSaveState = () => {
   localStorage.setItem(`${prefix}_Answers`, JSON.stringify(answers));
   localStorage.setItem(`${prefix}_Current`, current.toString());
