@@ -12,7 +12,7 @@ function start() {
 
     const hasOldData =
       localStorage.getItem(`${prefix}_Answers`) ||
-      localStorage.getItem("exUsername") ||
+      localStorage.getItem(`${prefix}_Username`) ||
       localStorage.getItem(`${prefix}_SetName`);
 
     if (hasOldData) {
