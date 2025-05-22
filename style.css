@@ -261,11 +261,12 @@ tr.incorrect {
 
 #quiz-img {
   width: 100%;
+  height: 100%;
   aspect-ratio: 1 / 1;
   object-fit: contain;
   display: block;
-  border: 2px solid #555; /* ← 枠線の色と太さ */
-  background-color: white; /* ← 背景色も入れると見やすくなる */
+  border: 2px solid #555;
+  background-color: white;
 }
 
 /* ◁ 画像 ▷ を横並び＋中央揃え */
