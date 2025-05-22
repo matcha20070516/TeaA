@@ -4,18 +4,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const setName = localStorage.getItem("exSetName") || "謎検模試セット";
   const attemptCount = localStorage.getItem("exAttemptCount") || "1";
 
-  const usernameElement = document.getElementById("username");
-  if (usernameElement) {
-    usernameElement.textContent = username;
-  }
-
+  document.getElementById("username").textContent = name;
   document.getElementById("score").textContent = score;
   document.getElementById("attemptCountDisplay").textContent = `${attemptCount}回目`;
-
-  const setNameElement = document.getElementById("setname");
-  if (setNameElement) {
-    setNameElement.textContent = setName;
-  }
+  document.getElementById("setname").textContent = setName;
 
   const tweetText = encodeURIComponent(
     `${setName}の結果は【${score}点】でした！ #謎解き #TeaA`
