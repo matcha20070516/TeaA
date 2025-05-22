@@ -78,7 +78,7 @@ const autoSaveState = () => {
 
 const loadQuestion = () => {
   document.getElementById("question-num").textContent = `第${current}問`;
-  document.getElementById("quiz-img").src = `q${current}.png`;
+  document.getElementById("quiz-img").src = `mq${current}.png`;
   document.getElementById("answer").value = answers[current - 1] || "";
 
   // ここで解答形式表示も更新
