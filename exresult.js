@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("setname").textContent = displaySetName;
 
   const tweetText = encodeURIComponent(
-    `${displaySetName}の結果は【${score}点】でした！ #謎解き #TeaA`
+    `『${displaySetName}』の結果は【${score}点】でした！ #謎解き #TeaA`
   );
   document.getElementById("share-link").href = `https://twitter.com/intent/tweet?text=${tweetText}`;
 
