@@ -8,13 +8,16 @@ function start() {
   }
 
   if (set.includes("謎検模試")) {
-    const hasOldData =
-      localStorage.getItem("exAnswers") ||
-      localStorage.getItem("exUsername") ||
-      localStorage.getItem("exSetName");
+    // そのセットのデータが残っているかチェック
+    const savedSet = localStorage.getItem("exSetName");
+    const hasDataForThisSet =
+      savedSet === set &&
+      (localStorage.getItem("exAnswers") ||
+       localStorage.getItem("exUsername") ||
+       localStorage.getItem("exScore"));
 
-    if (hasOldData) {
-      const continueOld = confirm("以前のデータが残っています。続けますか？「OK」で続行、「キャンセル」で新しく始めます。");
+    if (hasDataForThisSet) {
+      const continueOld = confirm("以前このセットのデータが残っています。続けますか？「OK」で続行、「キャンセル」で新しく始めます。");
       if (!continueOld) {
         let count = parseInt(localStorage.getItem("exAttemptCount") || "0", 10);
         count += 1;
@@ -46,7 +49,7 @@ function start() {
       alert("模試を始めます。（1回目の挑戦）");
     }
 
-    // ✅ 保存して即遷移（←ここだけ変更！）
+    // ✅ 保存して即遷移
     localStorage.setItem("exUsername", name);
     localStorage.setItem("exSetName", set);
     window.location.href = "exrule.html";
