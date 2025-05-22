@@ -133,14 +133,13 @@
 
     <div class="chapters" id="chapters"></div>
 
-<div class="question-box" style="text-align: center; margin-bottom: 10px;">
-      <span id="back-btn" class="nav-btn" onclick="back()">◁</span>
-      <div id="question-area" style="width: 300px; height: 300px; border: 2px solid #333; display: flex; justify-content: center; align-items: center; overflow: hidden; background: #f9f9f9;">
-  <img id="quiz-img" src="q1.png" alt="問題画像" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+<div class="question-box">
+  <span id="back-btn" class="nav-btn" onclick="back()">◁</span>
+  <div id="question-area">
+    <img id="quiz-img" src="q1.png" alt="問題画像" />
+  </div>
+  <span id="forward-btn" class="nav-btn" onclick="forward()">▷</span>
 </div>
-</div>
-      <span id="forward-btn" class="nav-btn" onclick="forward()">▷</span>
-    </div>
 <!-- 解答欄と終了ボタン+解答形式を横並びに -->
 <div class="answer-area">
   <input 
