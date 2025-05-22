@@ -3,7 +3,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const prefix = `ex_${setName}_`;
 
   const username = localStorage.getItem(`${prefix}Username`) || "名無し";
-  const score = localStorage.getItem(`${prefix}SetName`l) || "0";
+  const score = localStorage.getItem(`${prefix}SetName`) || "0";
   const displaySetName = localStorage.getItem(`${prefix}SetName`) || setName;
   const attemptCount = localStorage.getItem(`${prefix}AttemptCount`) || "1";
 
