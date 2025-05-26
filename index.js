@@ -21,13 +21,19 @@ function start() {
         let count = parseInt(localStorage.getItem(`${prefix}_AttemptCount`) || "0", 10);
         count += 1;
         localStorage.setItem(`${prefix}_AttemptCount`, count);
-
+        
         const exKeysToClear = [
-          "Username", "SetName", "Answers", "Score", "TimeLimit",
-          "ElapsedTime", "StartTime", "Progress", "CurrentPage", "Current", "ResultLocked"
-        ];
+    "Username", "SetName", "Answers", "Score", "TimeLimit",
+    "ElapsedTime", "StartTime", "Progress", "CurrentPage", "Current", "ResultLocked"
+  ];
+        // prefix付きのキー削除
         exKeysToClear.forEach(key => localStorage.removeItem(`${prefix}_${key}`));
 
+        // 念のため旧形式のキーも削除
+        const legacyKeys = [
+    "exAnswers", "exScore", "exElapsedTime", "exCurrent", "exResultLocked"
+  ];
+        legacyKeys.forEach(key => localStorage.removeItem(key));
         localStorage.setItem(`${prefix}_FreshStart`, "true");
         alert(`新しく始めます。（${count}回目の挑戦）`);
       } else {
