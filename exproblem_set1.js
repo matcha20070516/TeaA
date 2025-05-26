@@ -196,16 +196,16 @@ window.onload = () => {
 
   document.getElementById("submit-btn").onclick = confirmAndFinish;
 // モーダル拡大表示用の処理
-document.getElementById("quiz-img").addEventListener("click", function () {
-  const modal = document.getElementById("imageModal");
-  const modalImg = document.getElementById("modalImage");
-  modal.style.display = "block";
-  modalImg.src = this.src;
-});
-
-document.getElementById("imageModal").addEventListener("click", function () {
-  this.style.display = "none";
-});
+  document.getElementById("quiz-img").addEventListener("click", function () {
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImage");
+    modal.style.display = "block";
+    modalImg.src = this.src;
+  });
+  
+  document.getElementById("imageModal").addEventListener("click", function () {
+    this.style.display = "none";
+  });
   document.getElementById("confirm-yes").onclick = finishExam;
   document.getElementById("confirm-no").onclick = () => {
     document.getElementById("confirm-overlay").style.display = "none";
