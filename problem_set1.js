@@ -19,6 +19,7 @@ function loadQuestion() {
     document.getElementById("message").textContent = "";
     updateNavButtons();
     updateChapters();
+    attachZoomableHandler();
 }
 
 function updateNavButtons() {
@@ -43,6 +44,24 @@ function updateChapters() {
         };
         chapterContainer.appendChild(btn);
     }
+}
+
+function attachZoomableHandler() {
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImage");
+
+    const zoomables = document.querySelectorAll('.zoomable');
+    zoomables.forEach(img => {
+        img.onclick = () => {
+            modal.style.display = "flex";
+            modalImg.src = img.src;
+        };
+    });
+
+    modal.onclick = () => {
+        modal.style.display = "none";
+        modalImg.src = "";
+    };
 }
 
 function checkAnswer() {
