@@ -6,7 +6,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const score = localStorage.getItem(`${prefix}Score`) || localStorage.getItem("exScore") || "0";
   const displaySetName = localStorage.getItem(`${prefix}SetName`) || setName;
   const attemptCount = localStorage.getItem(`${prefix}AttemptCount`) || "1";
-  const elapsedTime = localStorage.getItem(`${prefix}ElapsedTime`) || "0";
 
   document.getElementById("username").textContent = username;
   document.getElementById("score").textContent = score;
