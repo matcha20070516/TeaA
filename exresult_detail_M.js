@@ -2,8 +2,8 @@ window.onload = () => {
   const answers = JSON.parse(localStorage.getItem("exAnswers") || "[]");
   const correctAnswers = [
     "3", "たにそこ", "はんたい", "おろそか", "こまいぬ",
-    "きょうと", "ちくせき", "ホエール", "はんらん", "がんばん",
-    "たつじん", "とのさま", "かけごえ", "てきかく", "dream",
+    "ちくせき", "きょうと", "ホエール", "はんらん", "がんばん",
+    "たつじん", "とのさま", "かけごえ", "てきかく", "ドリーム",
     "みさんが", "ながさき", "いせえび", "はだいろ", "かいどく"
   ];
   const pointsPerQuestion = [
