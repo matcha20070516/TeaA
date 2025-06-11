@@ -40,7 +40,5 @@ window.onload = () => {
   }
 
     // 結果概要テキスト（得点・正解数）表示
-  window.onload = () => {
-  // ...中略...
   document.getElementById("result-summary").textContent = 
     `正解数：${correctCount} / ${correctAnswers.length} 問, 合計得点：${totalScore} 点`;
