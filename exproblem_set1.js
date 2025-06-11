@@ -53,33 +53,6 @@ if (isFreshStart) {
   }
 }
 
-const validateFormat = (input, format) => {
-  switch (format) {
-    case "ひらがな": return /^[\u3040-\u309F]+$/.test(input);
-    case "カタカナ": return /^[\u30A0-\u30FF]+$/.test(input);
-    case "漢字": return /^[\u4E00-\u9FAF]+$/.test(input);
-    case "半角英数": return /^[A-Za-z0-9]+$/.test(input);
-    case "数字": return /^[0-9]+$/.test(input);
-    default: return true;
-  }
-};
-
-document.getElementById("answer").addEventListener("input", () => {
-  const ans = document.getElementById("answer").value.trim();
-  const format = answerFormats[current - 1];
-  const isValid = validateFormat(ans, format);
-
-  document.getElementById("format-warning").textContent =
-    isValid || ans === "" ? "" : `⚠ 解答形式が「${format}」と異なります`;
-
-  const btns = document.querySelectorAll(".chapter-btn");
-  if (!isValid && ans !== "") {
-    btns[current - 1]?.classList.add("invalid");
-  } else {
-    btns[current - 1]?.classList.remove("invalid");
-  }
-});
-
 const updateTimer = () => {
   if (timeLimit <= 0) {
     clearInterval(timerInterval);
@@ -118,31 +91,6 @@ const loadQuestion = () => {
   updateNavButtons();
   updateChapters();
 };
-
-const canvas = document.getElementById('draw-layer');
-const ctx = canvas.getContext('2d');
-let drawing = false;
-
-canvas.addEventListener("mousedown", e => {
-  drawing = true;
-  ctx.beginPath();
-  ctx.moveTo(e.offsetX, e.offsetY);
-});
-canvas.addEventListener("mousemove", e => {
-  if (drawing) {
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.stroke();
-  }
-});
-canvas.addEventListener("mouseup", () => drawing = false);
-canvas.addEventListener("mouseleave", () => drawing = false);
-
-// resize canvas with image
-window.addEventListener("resize", () => {
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
-});
-window.dispatchEvent(new Event("resize"));
 
 const updateNavButtons = () => {
   document.getElementById("back-btn").style.visibility = current > 1 ? "visible" : "hidden";
