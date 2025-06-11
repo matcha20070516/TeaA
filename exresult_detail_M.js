@@ -44,11 +44,3 @@ window.onload = () => {
   // ...中略...
   document.getElementById("result-summary").textContent = 
     `正解数：${correctCount} / ${correctAnswers.length} 問, 合計得点：${totalScore} 点`;
-
-  const elapsedTime = localStorage.getItem(`${prefix}ElapsedTime`) || "0"; // 修正済み
-  const elapsed = parseInt(elapsedTime, 10);
-  const minutes = Math.floor(elapsed / 60);
-  const seconds = elapsed % 60;
-  document.getElementById("result-time").textContent =
-    `解答時間：${minutes}分${seconds}秒`;
-};
