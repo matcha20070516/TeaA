@@ -7,10 +7,10 @@ window.onload = () => {
     "答え16", "答え17", "答え18", "答え19", "答え20"
   ];
   const pointsPerQuestion = [
-    3, 5, 4, 6, 2,
-    3, 5, 4, 6, 2,
-    3, 5, 4, 6, 2,
-    3, 5, 4, 6, 2
+    2, 3, 6, 3, 4,
+    4, 4, 4, 6, 6,
+    6, 3, 3, 4, 6,
+    4, 8, 8, 6, 10
   ];
   const tbody = document.querySelector("#detail-table tbody");
   let totalScore = 0;
