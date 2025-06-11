@@ -44,8 +44,4 @@ window.onload = () => {
     `正解数：${correctCount} / ${correctAnswers.length} 問, 合計得点：${totalScore} 点`;
 
   // 経過時間の表示
-  const elapsed = parseInt(localStorage.getItem("exElapsedTime") || "0", 10);
-  const minutes = Math.floor(elapsed / 60);
-  const seconds = elapsed % 60;
-  document.getElementById("result-time").textContent =
-    `解答時間：${minutes}分${seconds}秒`;
+  document.getElementById("elapsedTime")
