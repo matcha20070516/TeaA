@@ -167,7 +167,6 @@ const handleExamEnd = (message) => {
   alert(message);
   location.href = "exresult.html";
 };
-
 const confirmAndFinish = () => {
   document.getElementById("confirm-overlay").style.display = "flex";
 };
@@ -175,14 +174,12 @@ const timeUp = () => handleExamEnd("時間切れです。結果画面に移動�
 const finishExam = () => handleExamEnd("試験終了です。結果画面に遷移します。");
 
 window.onload = () => {
-  // ロックメッセージ表示
   if (isLocked()) {
     const lockNotice = document.createElement("p");
     lockNotice.textContent = "この模試の結果は確定済みです。解答を変更できません。";
     lockNotice.style.color = "red";
     document.querySelector(".quiz-area")?.prepend(lockNotice);
   }
-  
 
   loadQuestion();
   updateTimer();
@@ -194,20 +191,22 @@ window.onload = () => {
     updateChapters();
   });
 
+  // 終了確認モーダル関連のイベント登録
   document.getElementById("submit-btn").onclick = confirmAndFinish;
-// モーダル拡大表示用の処理
+  document.getElementById("confirm-yes").onclick = finishExam;
+  document.getElementById("confirm-no").onclick = () => {
+    document.getElementById("confirm-overlay").style.display = "none";
+  };
+
+  // 問題画像クリックでモーダル拡大
   document.getElementById("quiz-img").addEventListener("click", function () {
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImage");
     modal.style.display = "block";
     modalImg.src = this.src;
   });
-  
+
   document.getElementById("imageModal").addEventListener("click", function () {
     this.style.display = "none";
   });
-  document.getElementById("confirm-yes").onclick = finishExam;
-  document.getElementById("confirm-no").onclick = () => {
-    document.getElementById("confirm-overlay").style.display = "none";
-  };
 };
