@@ -42,7 +42,7 @@ function start() {
     } else {
       localStorage.setItem(`${prefix}_AttemptCount`, "1");
       localStorage.setItem(`${prefix}_FreshStart`, "true");
-      alert("模試を始めます。（1回目の挑戦）");
+      alert("模試を始めます。");
     }
 
     localStorage.setItem(`${prefix}_Username`, name);
