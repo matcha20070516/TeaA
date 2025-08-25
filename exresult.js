@@ -12,6 +12,15 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("attemptCountDisplay").textContent = `${attemptCount}回目`;
   document.getElementById("setname").textContent = displaySetName;
 
+  const reviewBtn = document.getElementById("review-btn");
+if (reviewBtn) {
+  reviewBtn.addEventListener("click", () => {
+    localStorage.setItem("exReviewMode", "true");
+    localStorage.setItem("exCurrent", "1"); // 1問目から開始
+    window.location.href = "exproblem_set1.html"; // ←問題ページ
+  });
+}
+
   const tweetText = encodeURIComponent(
     `『${displaySetName}』の結果は【${score}点】でした！ #謎解き #TExAM`
   );
