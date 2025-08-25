@@ -135,26 +135,24 @@
 
 <div class="question-box">
   <span id="back-btn" class="nav-btn" onclick="back()">◁</span>
-  <div id="question-area">
-    <div style="
-      width: 100%;
-      max-width: 250px;
-      aspect-ratio: 1 / 1;
-      background-color: white;
-      border: 2px solid #555;
-      border-radius: 8px;
-      overflow: hidden;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      ">
-  <img id="quiz-img"src="mq1.png" class="zoomable" alt="問題画像" style="
+  <div id="question-area" style="
     width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
+    max-width: 400px;   /* ← 大きさを広げる */
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   ">
+    <img id="quiz-img" src="mq1.png" class="zoomable" alt="問題画像" style="
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    ">
+  </div>
+  <span id="forward-btn" class="nav-btn" onclick="forward()">▷</span>
 </div>
   </div>
   <span id="forward-btn" class="nav-btn" onclick="forward()">▷</span>
