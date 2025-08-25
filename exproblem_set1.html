@@ -139,7 +139,6 @@
     width: 100%;
     aspect-ratio: 1 / 1;
     max-width: 80vw;     /* 画面幅の90%まで広がる */
-    background-color: white;
     border: 2px solid #555;
     border-radius: 8px;
     overflow: hidden;
@@ -151,7 +150,7 @@
       width: 100%;
       height: auto;       /* 元の比率で拡縮 */
       display: block;
-      object-fit: cover;
+      object-fit: contain;
     ">
   </div>
   <span id="forward-btn" class="nav-btn" onclick="forward()">▷</span>
