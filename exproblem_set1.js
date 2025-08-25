@@ -164,6 +164,47 @@ const handleExamEnd = (message) => {
   localStorage.removeItem("exCurrent");
   localStorage.removeItem("exTimeLeft");
 
+const reviewMode = localStorage.getItem("exReviewMode") === "true";
+
+window.onload = () => {
+  if (reviewMode) {
+    // タイマー非表示
+    const t = document.getElementById("timer");
+    if (t) t.style.display = "none";
+
+    // 入力欄を触れなくする
+    const ans = document.getElementById("answer");
+    if (ans) ans.disabled = true;
+
+    // 「終了」ボタンを隠す
+    const submitBtn = document.getElementById("submit-btn");
+    if (submitBtn) submitBtn.style.display = "none";
+
+    // 「結果に戻る」ボタンを左上に追加
+    const backBtn = document.createElement("button");
+    backBtn.id = "back-to-result";
+    backBtn.textContent = "結果に戻る";
+    backBtn.style.position = "fixed";
+    backBtn.style.top = "12px";
+    backBtn.style.left = "12px";
+    backBtn.style.zIndex = "1001";
+    backBtn.style.padding = "8px 12px";
+    document.body.appendChild(backBtn);
+
+    backBtn.addEventListener("click", () => {
+      localStorage.removeItem("exReviewMode");
+      window.location.href = "exresult_detail_M.html"; // 詳細ページに戻る
+    });
+  } else {
+    // 普通の試験モードの処理（今まで通り）
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 1000);
+    if (submitBtn) submitBtn.onclick = confirmAndFinish;
+  }
+
+  loadQuestion();
+};
+  
   alert(message);
   location.href = "exresult.html";
 };
