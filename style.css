@@ -265,8 +265,6 @@ tr.incorrect {
   aspect-ratio: 1 / 1;
   object-fit: contain;
   display: block;
-  border: 2px solid #555;
-  background-color: white;
 }
 
 /* ◁ 画像 ▷ を横並び＋中央揃え */
@@ -284,16 +282,13 @@ tr.incorrect {
 
 #question-area {
   width: 100%;
-  max-width: 300px;
+  max-width: 300px;   /* ←好みで大きさ調整 */
   aspect-ratio: 1 / 1;
   border: 2px solid #333;
-  display: block; /* ←ここ重要！ */
-  background: #f9f9f9;
+  background: #fff;
   border-radius: 8px;
   overflow: hidden;
   box-sizing: border-box;
-  height: 100%;
-  object-fit: contain;
 }
 
 /* ◁▷ ボタン */
