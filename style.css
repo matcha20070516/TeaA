@@ -292,7 +292,6 @@ tr.incorrect {
   border-radius: 8px;
   overflow: hidden;
   box-sizing: border-box;
-} 
   height: 100%;
   object-fit: contain;
 }
