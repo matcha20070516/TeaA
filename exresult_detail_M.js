@@ -41,3 +41,10 @@ window.onload = () => {
 
   document.getElementById("result-summary").textContent = `正解数：${correctCount} / ${correctAnswers.length} 問, 合計得点：${totalScore} 点`;
 };
+
+const backBtn = document.getElementById("back-to-result");
+if (backBtn) {
+  backBtn.addEventListener("click", () => {
+    window.location.href = "exresult.html"; // ←サマリーに戻る
+  });
+}
