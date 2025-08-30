@@ -201,7 +201,6 @@ window.onload = () => {
     timerInterval = setInterval(updateTimer, 1000);
     if (submitBtn) submitBtn.onclick = confirmAndFinish;
   }
-
   loadQuestion();
 };
   
