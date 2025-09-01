@@ -164,9 +164,8 @@ const handleExamEnd = (message) => {
   localStorage.removeItem("exCurrent");
   localStorage.removeItem("exTimeLeft");
 
-const reviewMode = localStorage.getItem("exReviewMode") === "true";
-
 window.onload = () => {
+  const reviewMode = localStorage.getItem("exReviewMode") === "true";
   if (reviewMode) {
     // タイマー非表示
     const t = document.getElementById("timer");
