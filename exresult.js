@@ -15,25 +15,12 @@ window.addEventListener("DOMContentLoaded", () => {
   const reviewBtn = document.getElementById("review-btn");
 if (reviewBtn) {
   reviewBtn.addEventListener("click", () => {
-    const setName = localStorage.getItem("currentExamSet") || "set1";
     localStorage.setItem("exReviewMode", "true");
-    localStorage.setItem("exReviewSet", setName); // ★どのセットか保存
-    // セット名で飛び先を変える
-    let problemPage = "exproblem_set1.html";
-    if (setName.includes("ろい")) {
-      problemPage = "exproblem_ろい.html";
-    } else if (setName.includes("set3")) {
-      problemPage = "exproblem_set3.html";
-    }
-
-    window.location.href = problemPage;
+    localStorage.setItem("exCurrent", "1"); // 1問目から開始
+    window.location.href = "exproblem_set1.html"; // ←問題ページ
   });
 }
 
-    window.location.href = problemPage;
-  });
-}
-                        
   const tweetText = encodeURIComponent(
     `『${displaySetName}』の結果は【${score}点】でした！ #謎解き #TExAM`
   );
