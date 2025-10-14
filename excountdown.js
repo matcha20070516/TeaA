@@ -9,26 +9,26 @@ const timer = setInterval(() => {
         countdownEl.offsetHeight; // reflow
         countdownEl.style.animation = null;
     } else if (count === 0) {
-        countdownEl.textContent = "スタート！";
+        countdownEl.textContent = "開始！";
     } else {
         clearInterval(timer);
 
-        // ✅ localStorage に変更！
-        const selectedSet = localStorage.getItem('exSetName');
+        // ✅ 正しいキーで取得
+        const selectedSet = localStorage.getItem('currentExamSet');
 
         let targetPage = '';
         switch (selectedSet) {
             case '謎検模試_M':
                 targetPage = 'exproblem_set1.html';
                 break;
-            case 'お謎検模試ろい':
+            case '謎検模試test':
                 targetPage = 'exproblem_set2.html';
                 break;
-            case 'set3':
+            case '謎検模試_set3':
                 targetPage = 'exproblem_set3.html';
                 break;
             default:
-                targetPage = 'exproblem_set1.html';
+                targetPage = 'exproblem_set1.html'; // fallback
                 break;
         }
 
