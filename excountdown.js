@@ -21,14 +21,14 @@ const timer = setInterval(() => {
             case '謎検模試_M':
                 targetPage = 'exproblem_set1.html';
                 break;
-            case '謎検模試test':
+            case '謎検模試_MⅡ':
                 targetPage = 'exproblem_set2.html';
                 break;
             case '謎検模試_set3':
                 targetPage = 'exproblem_set3.html';
                 break;
             default:
-                targetPage = 'exproblem_set1.html'; // fallback
+                targetPage = 'index.html'; // fallback
                 break;
         }
 
