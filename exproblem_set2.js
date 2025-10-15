@@ -120,7 +120,7 @@ const autoSaveState = () => {
 
 const loadQuestion = () => {
   document.getElementById("question-num").textContent = `第${current}問`;
-  document.getElementById("quiz-img").src = `mq${current}.PNG`;
+  document.getElementById("quiz-img").src = `mq2${current}.PNG`;
   document.getElementById("answer").value = answers[current - 1] || "";
 
   const formatSpan = document.getElementById("answer-format");
@@ -140,7 +140,7 @@ const loadQuestion = () => {
   }
   if (current > 1) {
     const prevImg = new Image();
-    prevImg.src = `mq2${current - 1}.PNG`;
+    prevImg.src = `mq${current - 1}.PNG`;
   }
 };
 
