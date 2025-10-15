@@ -136,11 +136,11 @@ const loadQuestion = () => {
   // 次の問題の画像をプリロード
   if (current < total) {
     const nextImg = new Image();
-    nextImg.src = `mq${current + 1}.PNG`;
+    nextImg.src = `mq2${current + 1}.PNG`;
   }
   if (current > 1) {
     const prevImg = new Image();
-    prevImg.src = `mq${current - 1}.PNG`;
+    prevImg.src = `mq2${current - 1}.PNG`;
   }
 };
 
