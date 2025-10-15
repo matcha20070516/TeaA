@@ -1,3 +1,13 @@
+  // === デバッグ用リセットコマンド ===
+  if (name.toUpperCase() === "リセットさん") {
+    if (confirm("⚠️ 全データをリセットしますか？（模試結果・途中データすべて消えます）")) {
+      localStorage.clear();
+      alert("全データをリセットしました。");
+      location.reload();
+      return;
+    }
+  }
+
 // ページ読み込み時に受験済みチェックマークを表示
 window.addEventListener('DOMContentLoaded', () => {
   updateExamStatus();
