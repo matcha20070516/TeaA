@@ -15,8 +15,9 @@
   body {
     display: flex;
     justify-content: center; /* 横中央 */
-    align-items: center;     /* 縦中央 */
+    align-items: flex-start; /* 上寄せに変更 */
     padding: 20px;
+    overflow-y: auto; /* ←これで縦スクロール可能に！ */
   }
 
   .container {
@@ -31,6 +32,11 @@
 
   h1 {
     text-align: center;
+  }
+
+  p {
+    line-height: 1.6;
+    word-wrap: break-word;
   }
 
   button {
@@ -55,7 +61,7 @@
     <h1>ルール</h1>
     <p>・問題は全20問です。</p>
     <p>・メモ用紙や筆記用具の使用を推奨しています。</p>
-    <p>・答えはすべてweblio辞書のデジタル大辞泉（https://www.weblio.jp/cat/dictionary/sgkdj）に掲載されている言葉になります。</p>
+    <p>・答えはすべてweblio辞書の（<a href= "https://www.weblio.jp/cat/dictionary/sgkdj" >デジタル大辞泉</a>）に掲載されている言葉になります。</p>
     <p>・ソースの閲覧は禁止です。</p>
     <p>・制限時間は30分です。</p>
     <p>・時間内に解き終えた場合は途中終了も可能です。</p>
