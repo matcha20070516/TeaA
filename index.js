@@ -1,9 +1,3 @@
-// === デバッグ用リセットコマンド ===
-if (localStorage.getItem("resetPending") === "true") {
-  localStorage.clear();
-  localStorage.removeItem("resetPending");
-  alert("全データをリセットしました。");
-}
 
 // === ページ読み込み時 ===
 window.addEventListener("DOMContentLoaded", () => {
@@ -35,16 +29,6 @@ function start() {
 
   if (!name) {
     alert("名前を入力してください");
-    return;
-  }
-
-  // リセット用
-  if (name === "リセットさん") {
-    if (confirm("⚠️ 全データをリセットしますか？")) {
-      localStorage.clear();
-      alert("全データを削除しました。");
-      location.reload();
-    }
     return;
   }
 
