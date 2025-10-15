@@ -140,7 +140,7 @@ const loadQuestion = () => {
   }
   if (current > 1) {
     const prevImg = new Image();
-    prevImg.src = `mq${current - 1}.PNG`;
+    prevImg.src = `mq2${current - 1}.PNG`;
   }
 };
 
