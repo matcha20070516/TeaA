@@ -38,14 +38,14 @@ window.addEventListener("DOMContentLoaded", () => {
         case "謎検模試_M":
           targetPage = "exproblem_set1.html";
           break;
-        case "謎検模試test":
+        case "謎検模試_MⅡ":
           targetPage = "exproblem_set2.html";
           break;
-        case "謎検模試_set3":
+        case "謎検模試_MⅢ":
           targetPage = "exproblem_set3.html";
           break;
         default:
-          targetPage = "exproblem_set1.html"; // fallback
+          targetPage = "index.html"; // fallback
           break;
       }
 
@@ -70,13 +70,13 @@ window.addEventListener("DOMContentLoaded", () => {
   let detailPage = "exresult_detail_M.html";
   if (setName === "謎検模試_M") {
     detailPage = "exresult_detail_M.html";
-  } else if (setName === "謎検模試test") {
+  } else if (setName === "謎検模試_MⅡ") {
     detailPage = "exresult_detail_test.html";
-  } else if (setName === "謎検模試_set3") {
+  } else if (setName === "謎検模試_MⅢ") {
     detailPage = "exresult_detail_set3.html";
   } else {
     // その他はデフォルト
-    detailPage = "exresult_detail_M.html";
+    detailPage = "index.html";
   }
   const detailLink = document.getElementById("detail-link");
   if (detailLink) {
