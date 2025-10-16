@@ -76,8 +76,14 @@ localStorage.removeItem(“exAnswers”);
 startTime = Date.now();
 localStorage.setItem(“exStartTime”, startTime);
 } else {
-// 保存された開始時刻を取得
-startTime = parseInt(localStorage.getItem(“exStartTime”) || Date.now());
+// 保存された開始時刻を取得（修正: デフォルト値をちゃんと処理）
+const savedTime = localStorage.getItem(“exStartTime”);
+startTime = savedTime ? parseInt(savedTime, 10) : Date.now();
+
+// 保存がなかった場合は新規として保存
+if (!savedTime) {
+localStorage.setItem(“exStartTime”, startTime);
+}
 
 const savedCurrent = parseInt(localStorage.getItem(“exCurrent”) || “1”, 10);
 current = savedCurrent;
@@ -308,7 +314,7 @@ if (isLocked()) {
 const lockNotice = document.createElement(“p”);
 lockNotice.textContent = “この模試の結果は確定済みです。解答を変更できません。”;
 lockNotice.style.color = “red”;
-document.querySelector(”.quiz-area”)?.prepend(lockNotice);
+document.querySelector(”.container”)?.prepend(lockNotice);
 
 ```
 const elapsed = parseInt(localStorage.getItem("exElapsedTime") || "0", 10);
