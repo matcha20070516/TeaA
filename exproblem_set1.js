@@ -31,7 +31,10 @@ let timerInterval = null;
 // 追加: このセット専用の識別子
 const EXAM_SET_ID = "謎検模試_M";
 
-const isLocked = () => localStorage.getItem("exResultLocked") === "true";
+const isLocked = () => {
+  return localStorage.getItem("ex_" + EXAM_SET_ID + "_ResultLocked") === "true" || 
+         localStorage.getItem("exResultLocked") === "true";
+};
 
 const isValidFormat = (answer, format) => {
   if (!answer || answer.trim() === "") return true;
@@ -228,8 +231,10 @@ const calculateScore = (userAnswers) => {
 const handleExamEnd = (message) => {
   saveCurrentAnswer();
 
+  // 修正: 新形式からも名前を取得できるようにする
   const username =
     document.getElementById("username-input")?.value ||
+    localStorage.getItem("ex_" + EXAM_SET_ID + "_Username") ||
     localStorage.getItem("exUsername") ||
     "名無し";
 
@@ -243,6 +248,7 @@ const handleExamEnd = (message) => {
   localStorage.setItem("ex_" + EXAM_SET_ID + "_Score", score);
   localStorage.setItem("ex_" + EXAM_SET_ID + "_Answers", JSON.stringify(answers));
   localStorage.setItem("ex_" + EXAM_SET_ID + "_SetName", setName);
+  localStorage.setItem("ex_" + EXAM_SET_ID + "_ResultLocked", "true");
 
   // 旧形式（互換性のため残す）
   localStorage.setItem("exUsername", username);
