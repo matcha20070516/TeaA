@@ -44,10 +44,6 @@
       color: #444;
     }
 
-    .result-info {
-      margin-bottom: 20px;
-    }
-
     .result-info p {
       font-size: 1.1em;
       margin: 8px 0;
@@ -105,16 +101,9 @@
     </div>
 
     <div class="button-group">
-      <a href="#" id="share-link" class="btn btn-tweet" target="_blank">
-        結果をポストする
-      </a>
-
-      <a id="detail-link" class="btn btn-detail" href="#">
-        解答詳細を見る
-      </a>
+      <a href="#" id="share-link" class="btn btn-tweet" target="_blank">結果をポストする</a>
+      <a id="detail-link" class="btn btn-detail" href="#">解答詳細を見る</a>
     </div>
-
-    <div id="result-summary"></div>
 
     <div class="button-group">
       <button id="review-btn" class="btn">問題を見返す</button>
@@ -124,87 +113,61 @@
   
   <script>
     window.addEventListener("DOMContentLoaded", () => {
-      // URLパラメータから情報取得
+      // URLパラメータ
       const params = new URLSearchParams(window.location.search);
       const grade = params.get('grade') || '準1級';
       const score = params.get('score') || '0';
-      
-      // currentExamSetから正しいprefixを取得
+
+      // prefix生成
       const currentExamSet = localStorage.getItem("currentExamSet") || "";
       const prefix = `ex_${currentExamSet}_`;
-      
+
+      // 各種データ取得
       const username = localStorage.getItem(`${prefix}Username`) || "名無し";
-      const displaySetName = localStorage.getItem(`${prefix}SetName`) || currentExamSet;
-
-      document.getElementById("username").textContent = username;
-      document.getElementById("score").textContent = score;
-      document.getElementById("setname").textContent = displaySetName;
-      document.getElementById("grade").textContent = grade;
-
-      const elapsedSec =
-        Number(localStorage.getItem(`${prefix}ElapsedTime`)) ||
-        Number(localStorage.getItem("exElapsedTime")) ||
-        0;
+      const setname = localStorage.getItem(`${prefix}SetName`) || currentExamSet;
+      const elapsedSec = Number(localStorage.getItem(`${prefix}ElapsedTime`)) || 0;
 
       function formatTime(sec) {
         const m = Math.floor(sec / 60);
         const s = sec % 60;
         return `${m}分${s}秒`;
       }
+
+      document.getElementById("username").textContent = username;
+      document.getElementById("setname").textContent = setname;
+      document.getElementById("score").textContent = score;
+      document.getElementById("grade").textContent = grade;
       document.getElementById("elapsedTimeDisplay").textContent = formatTime(elapsedSec);
 
-      const reviewBtn = document.getElementById("review-btn");
-      if (reviewBtn) {
-        reviewBtn.addEventListener("click", () => {
-          localStorage.setItem("exReviewMode", "true");
-          localStorage.setItem("exCurrent", "1");
-
-          let targetPage = "";
-          switch (displaySetName) {
-            case "謎検模試_M":
-              targetPage = "exproblem_set1.html";
-              break;
-            case "謎検模試test":
-              targetPage = "exproblem_set2.html";
-              break;
-            case "謎検模試_set3":
-              targetPage = "exproblem_set3.html";
-              break;
-            default:
-              targetPage = "exproblem_set1.html";
-              break;
-          }
-
-          window.location.href = targetPage;
-        });
-      }
-
-      const homeBtn = document.getElementById("home-btn");
-      if (homeBtn) {
-        homeBtn.addEventListener("click", () => {
-          window.location.href = "index.html";
-        });
-      }
-
-      // 共有用URLを使用
+      // シェアリンク
       const shareUrl = params.get('shareUrl') || window.location.href;
-      const tweetText = encodeURIComponent(
-        `『${displaySetName}』の結果は【${score}点】で【${grade}】でした！ #謎解き #TExAM #${displaySetName.replace(/\s/g, '')}\n${shareUrl}`
-      );
+      const tweetText = encodeURIComponent(`『${setname}』の結果は【${score}点】で【${grade}】でした！ #謎解き #TExAM #${setname.replace(/\s/g, '')}\n${shareUrl}`);
       document.getElementById("share-link").href = `https://twitter.com/intent/tweet?text=${tweetText}`;
 
-      let detailPage = "exresult_detail_M.html";
-      if (displaySetName === "謎検模試_M") {
-        detailPage = "exresult_detail_M.html";
-      } else if (displaySetName === "謎検模試test") {
-        detailPage = "exresult_detail_test.html";
-      } else if (displaySetName === "謎検模試_set3") {
-        detailPage = "exresult_detail_set3.html";
-      }
-      const detailLink = document.getElementById("detail-link");
-      if (detailLink) {
-        detailLink.href = detailPage;
-      }
+      // 詳細ページ遷移
+      const detailMap = {
+        "謎検模試_M": "exresult_detail_M.html",
+        "謎検模試_MⅡ": "exresult_detail_MⅡ.html",
+        "謎検模試_MⅢ": "exresult_detail_MⅢ.html",
+      };
+      document.getElementById("detail-link").href = detailMap[setname] || "exresult_detail_M.html";
+
+      // 見返しボタン
+      document.getElementById("review-btn").onclick = () => {
+        localStorage.setItem("exReviewMode", "true");
+        localStorage.setItem("exCurrent", "1");
+        const map = {
+          "謎検模試_M": "exproblem_set1.html",
+          "謎検模試_MⅡ": "exproblem_set2.html",
+          "謎検模試_MⅢ": "exproblem_set3.html",
+        };
+        window.location.href = map[setname] || "exproblem_set1.html";
+      };
+
+      // ホームに戻る
+      document.getElementById("home-btn").onclick = () => {
+        window.location.href = "index.html";
+      };
     });
   </script>
 </body>
