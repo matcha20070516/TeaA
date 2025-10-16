@@ -28,43 +28,7 @@ const answerFormats = [
 
 let timerInterval = null;
 
-// 試験セット名（複数の試験に対応）
-const EXAM_SET_NAME = “謎検模試_M”;
-
-// ============================================
-// 既存システムとの互換性を保つためのプレフィックス管理
-// ============================================
-const getStorageKey = (key) => {
-// 新しいシステム: ex_${examSet}_Key
-const examSet = localStorage.getItem(“currentExamSet”) || EXAM_SET_NAME;
-return `ex_${examSet}_${key}`;
-};
-
-// 旧システムとの互換性のための取得関数
-const getStorageValue = (key, fallbackKey = null) => {
-const newKey = getStorageKey(key);
-const value = localStorage.getItem(newKey);
-
-// 新しいキーで取得できなければ、フォールバック（旧システム）
-if (value === null && fallbackKey) {
-return localStorage.getItem(fallbackKey);
-}
-return value;
-};
-
-const setStorageValue = (key, value) => {
-const newKey = getStorageKey(key);
-localStorage.setItem(newKey, value);
-};
-
-const removeStorageValue = (key) => {
-const newKey = getStorageKey(key);
-localStorage.removeItem(newKey);
-};
-
-const isLocked = () => {
-return getStorageValue(“ResultLocked”, “exResultLocked”) === “true”;
-};
+const isLocked = () => localStorage.getItem(“exResultLocked”) === “true”;
 
 const isValidFormat = (answer, format) => {
 if (!answer || answer.trim() === “”) return true;
@@ -101,92 +65,45 @@ return { name: “8級”, num: 10 };
 };
 
 // ============================================
-// 修正1: タイマーリセット対策 - より堅牢な初期化
+// 修正1: タイマーリセット対策の最小限修正
 // ============================================
-const initializeExam = () => {
-// 現在の試験セットを保存
-localStorage.setItem(“currentExamSet”, EXAM_SET_NAME);
-
-const isFreshStart = getStorageValue(“FreshStart”, “exFreshStart”) === “true”;
-
+const isFreshStart = localStorage.getItem(“exFreshStart”) === “true”;
 if (isFreshStart) {
-console.log(“新規開始: データをリセット”);
-// 新規開始の場合、全てリセット
-removeStorageValue(“FreshStart”);
-removeStorageValue(“Current”);
-removeStorageValue(“StartTime”);
-removeStorageValue(“Answers”);
-removeStorageValue(“ElapsedTime”);
-
-```
-// 旧キーもクリア
-localStorage.removeItem("exFreshStart");
-localStorage.removeItem("exCurrent");
-localStorage.removeItem("exStartTime");
-localStorage.removeItem("exAnswers");
-localStorage.removeItem("exElapsedTime");
+localStorage.removeItem(“exFreshStart”);
+localStorage.removeItem(“exCurrent”);
+localStorage.removeItem(“exStartTime”);
+localStorage.removeItem(“exAnswers”);
 
 // 新規開始時刻を記録
 startTime = Date.now();
-setStorageValue("StartTime", startTime.toString());
-console.log("新規開始: startTime =", startTime);
-```
-
+localStorage.setItem(“exStartTime”, startTime.toString());
 } else {
-// 継続の場合、保存された時刻を復元
-const savedStartTime = getStorageValue(“StartTime”, “exStartTime”);
-
-```
-if (savedStartTime && savedStartTime !== "null" && savedStartTime !== "undefined") {
-  startTime = parseInt(savedStartTime, 10);
-  console.log("継続: startTime復元 =", startTime);
-} else {
-  // 保存された開始時刻がない場合は新規として扱う
-  startTime = Date.now();
-  setStorageValue("StartTime", startTime.toString());
-  console.log("開始時刻なし、新規作成: startTime =", startTime);
-}
-
-// 現在の問題番号を復元
-const savedCurrent = getStorageValue("Current", "exCurrent");
-if (savedCurrent) {
-  current = parseInt(savedCurrent, 10);
-  if (isNaN(current) || current < 1 || current > total) {
-    current = 1;
-  }
-}
-
-// 保存された解答を復元
-const savedAnswers = getStorageValue("Answers", "exAnswers");
-if (savedAnswers) {
-  try {
-    const parsedAnswers = JSON.parse(savedAnswers);
-    for (let i = 0; i < Math.min(parsedAnswers.length, total); i++) {
-      answers[i] = parsedAnswers[i] || "";
-    }
-  } catch (e) {
-    console.error("解答の復元に失敗:", e);
-  }
-}
-```
-
-}
-
-// 開始時刻が正しく設定されているか確認
-if (!startTime || isNaN(startTime)) {
-console.error(“startTimeが不正です。リセットします。”);
+// 保存された開始時刻を取得（文字列から数値に変換を確実に）
+const savedStartTime = localStorage.getItem(“exStartTime”);
+if (savedStartTime) {
+startTime = parseInt(savedStartTime, 10);
+// 不正な値の場合は現在時刻で初期化
+if (isNaN(startTime) || startTime <= 0) {
 startTime = Date.now();
-setStorageValue(“StartTime”, startTime.toString());
+localStorage.setItem(“exStartTime”, startTime.toString());
 }
-};
+} else {
+startTime = Date.now();
+localStorage.setItem(“exStartTime”, startTime.toString());
+}
 
-// ============================================
-// タイマー更新（ミリ秒精度で確実に計算）
-// ============================================
+const savedCurrent = parseInt(localStorage.getItem(“exCurrent”) || “1”, 10);
+current = savedCurrent;
+
+const savedAnswers = JSON.parse(localStorage.getItem(“exAnswers”) || “[]”);
+for (let i = 0; i < savedAnswers.length; i++) {
+answers[i] = savedAnswers[i] || “”;
+}
+}
+
 const updateTimer = () => {
-const now = Date.now();
-const elapsedMs = now - startTime;
-const elapsedSec = Math.floor(elapsedMs / 1000);
+// 経過時間を計算（ミリ秒→秒）
+const elapsedSec = Math.floor((Date.now() - startTime) / 1000);
 const remainingSec = TOTAL_TIME - elapsedSec;
 
 if (remainingSec <= 0) {
@@ -202,15 +119,14 @@ document.getElementById(“timer”).textContent =
 `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 
 // 経過時間を保存（結果画面用）
-setStorageValue(“ElapsedTime”, elapsedSec.toString());
-// 旧キーにも保存（互換性）
 localStorage.setItem(“exElapsedTime”, elapsedSec.toString());
 };
 
 const autoSaveState = () => {
-setStorageValue(“Answers”, JSON.stringify(answers));
-setStorageValue(“Current”, current.toString());
-setStorageValue(“StartTime”, startTime.toString());
+localStorage.setItem(“exAnswers”, JSON.stringify(answers));
+localStorage.setItem(“exCurrent”, current.toString());
+// 開始時刻も保存（念のため）
+localStorage.setItem(“exStartTime”, startTime.toString());
 };
 
 const loadQuestion = () => {
@@ -283,7 +199,7 @@ if (answers[i].trim() !== "") {
 btn.onclick = () => {
   saveCurrentAnswer();
   current = i + 1;
-  setStorageValue("Current", current.toString());
+  localStorage.setItem("exCurrent", current.toString());
   loadQuestion();
 };
 chapterContainer.appendChild(btn);
@@ -296,7 +212,7 @@ const back = () => {
 saveCurrentAnswer();
 if (current > 1) {
 current–;
-setStorageValue(“Current”, current.toString());
+localStorage.setItem(“exCurrent”, current.toString());
 loadQuestion();
 }
 };
@@ -305,7 +221,7 @@ const forward = () => {
 saveCurrentAnswer();
 if (current < total) {
 current++;
-setStorageValue(“Current”, current.toString());
+localStorage.setItem(“exCurrent”, current.toString());
 loadQuestion();
 }
 };
@@ -319,48 +235,30 @@ return userAnswers.reduce((score, ans, idx) =>
 score + (ans === correctAnswers[idx] ? pointsPerQuestion[idx] : 0), 0);
 };
 
-// ============================================
-// 修正3: 既存の級別ページシステムへの遷移
-// ============================================
 const handleExamEnd = (message) => {
 saveCurrentAnswer();
 
 const username =
 document.getElementById(“username-input”)?.value ||
-getStorageValue(“Username”, “exUsername”) ||
+localStorage.getItem(“exUsername”) ||
 “名無し”;
 
+const setName = “謎検模試_M”;
 const score = calculateScore(answers);
 const grade = getGrade(score);
 
-// 既存システムに合わせてデータを保存
-setStorageValue(“Username”, username);
-setStorageValue(“Score”, score.toString());
-setStorageValue(“GradeName”, grade.name);
-setStorageValue(“GradeNum”, grade.num.toString());
-setStorageValue(“Answers”, JSON.stringify(answers));
-setStorageValue(“SetName”, EXAM_SET_NAME);
-setStorageValue(“ResultLocked”, “true”);
-
-// 旧キーにも保存（互換性）
 localStorage.setItem(“exUsername”, username);
-localStorage.setItem(“exScore”, score.toString());
-localStorage.setItem(“exGradeName”, grade.name);
-localStorage.setItem(“exGradeNum”, grade.num.toString());
+localStorage.setItem(“exScore”, score);
 localStorage.setItem(“exAnswers”, JSON.stringify(answers));
-localStorage.setItem(“exSetName”, EXAM_SET_NAME);
+localStorage.setItem(“exSetName”, setName);
 localStorage.setItem(“exResultLocked”, “true”);
 
 // 受験済みフラグを保存
-localStorage.setItem(`${EXAM_SET_NAME}_completed`, “true”);
+localStorage.setItem(`${setName}_completed`, “true”);
 
-// currentExamSetを保存（結果ページで使用）
-localStorage.setItem(“currentExamSet”, EXAM_SET_NAME);
-
-removeStorageValue(“Current”);
 localStorage.removeItem(“exCurrent”);
 
-const reviewMode = getStorageValue(“ReviewMode”, “exReviewMode”) === “true”;
+const reviewMode = localStorage.getItem(“exReviewMode”) === “true”;
 if (reviewMode) {
 const t = document.getElementById(“timer”);
 if (t) t.style.display = “none”;
@@ -377,24 +275,15 @@ if (submitBtn) submitBtn.style.display = "none";
 
 alert(message);
 
-// 既存の級別ページへ遷移（OGP対応の結果ページ）
-const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, ‘’);
-const shareUrl = `${baseUrl}share/grade-${grade.num}.html`;
+const shareUrl = `https://matcha20070516.github.io/mytestplaydate/share/grade-${grade.num}.html`;
 
 const params = new URLSearchParams({
 grade: grade.name,
-score: score.toString(),
+score: score,
+set: setName,
 shareUrl: shareUrl
 });
-
-// 既存の結果ページに遷移
-const resultPage = `exresult_grade${grade.num}.html?${params.toString()}`;
-
-console.log(“遷移先:”, resultPage);
-console.log(“保存データ:”, { username, score, grade, setName: EXAM_SET_NAME });
-
-// ページ遷移を実行
-window.location.href = resultPage;
+location.href = `exresult_grade${grade.num}.html?${params.toString()}`;
 };
 
 const confirmAndFinish = () => {
@@ -429,26 +318,15 @@ forward();
 }
 });
 
-// ============================================
-// 初期化処理
-// ============================================
 window.onload = () => {
-// 試験データの初期化
-initializeExam();
-
 if (isLocked()) {
 const lockNotice = document.createElement(“p”);
 lockNotice.textContent = “この模試の結果は確定済みです。解答を変更できません。”;
 lockNotice.style.color = “red”;
-lockNotice.style.fontWeight = “bold”;
-lockNotice.style.textAlign = “center”;
 document.querySelector(”.quiz-area”)?.prepend(lockNotice);
 
 ```
-const elapsed = parseInt(
-  getStorageValue("ElapsedTime", "exElapsedTime") || "0",
-  10
-);
+const elapsed = parseInt(localStorage.getItem("exElapsedTime") || "0", 10);
 const fixedTimeLeft = TOTAL_TIME - elapsed;
 const m = Math.floor(fixedTimeLeft / 60);
 const s = fixedTimeLeft % 60;
@@ -461,8 +339,8 @@ loadQuestion();
 } else {
 loadQuestion();
 updateTimer();
-timerInterval = setInterval(updateTimer, 1000);
-setInterval(autoSaveState, 2000);
+timerInterval = setInterval(updateTimer, 100);
+setInterval(autoSaveState, 1000);
 
 ```
 const answerInput = document.getElementById("answer");
@@ -490,7 +368,7 @@ answerInput.addEventListener("input", () => {
 
 }
 
-const reviewMode = getStorageValue(“ReviewMode”, “exReviewMode”) === “true”;
+const reviewMode = localStorage.getItem(“exReviewMode”) === “true”;
 const submitBtn = document.getElementById(“submit-btn”);
 const confirmYes = document.getElementById(“confirm-yes”);
 const confirmNo = document.getElementById(“confirm-no”);
@@ -506,14 +384,4 @@ if (confirmNo) confirmNo.onclick = () => {
 document.getElementById(“confirm-overlay”).style.display = “none”;
 };
 }
-
-console.log(“初期化完了:”, { current, startTime, isLocked: isLocked() });
 };
-
-// ページ離脱時の警告
-window.addEventListener(“beforeunload”, (e) => {
-if (!isLocked() && answers.some(a => a.trim() !== “”)) {
-e.preventDefault();
-e.returnValue = “試験中です。ページを離れますか？”;
-}
-});
