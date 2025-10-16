@@ -64,9 +64,7 @@ if (s >= 20) return { name: “7級”, num: 9 };
 return { name: “8級”, num: 10 };
 };
 
-// ============================================
-// 修正1: タイマーリセット対策の最小限修正
-// ============================================
+// 新規スタート判定
 const isFreshStart = localStorage.getItem(“exFreshStart”) === “true”;
 if (isFreshStart) {
 localStorage.removeItem(“exFreshStart”);
@@ -76,21 +74,10 @@ localStorage.removeItem(“exAnswers”);
 
 // 新規開始時刻を記録
 startTime = Date.now();
-localStorage.setItem(“exStartTime”, startTime.toString());
+localStorage.setItem(“exStartTime”, startTime);
 } else {
-// 保存された開始時刻を取得（文字列から数値に変換を確実に）
-const savedStartTime = localStorage.getItem(“exStartTime”);
-if (savedStartTime) {
-startTime = parseInt(savedStartTime, 10);
-// 不正な値の場合は現在時刻で初期化
-if (isNaN(startTime) || startTime <= 0) {
-startTime = Date.now();
-localStorage.setItem(“exStartTime”, startTime.toString());
-}
-} else {
-startTime = Date.now();
-localStorage.setItem(“exStartTime”, startTime.toString());
-}
+// 保存された開始時刻を取得
+startTime = parseInt(localStorage.getItem(“exStartTime”) || Date.now());
 
 const savedCurrent = parseInt(localStorage.getItem(“exCurrent”) || “1”, 10);
 current = savedCurrent;
@@ -119,14 +106,12 @@ document.getElementById(“timer”).textContent =
 `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 
 // 経過時間を保存（結果画面用）
-localStorage.setItem(“exElapsedTime”, elapsedSec.toString());
+localStorage.setItem(“exElapsedTime”, elapsedSec);
 };
 
 const autoSaveState = () => {
 localStorage.setItem(“exAnswers”, JSON.stringify(answers));
 localStorage.setItem(“exCurrent”, current.toString());
-// 開始時刻も保存（念のため）
-localStorage.setItem(“exStartTime”, startTime.toString());
 };
 
 const loadQuestion = () => {
