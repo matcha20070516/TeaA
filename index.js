@@ -151,23 +151,21 @@ function closeHelp() {
 }
 
 // モーダル背景クリックで閉じる
-window.addEventListener('DOMContentLoaded', () => {
-  const modalHelp = document.getElementById('modalHelp');
-  const modalContent = document.querySelector('.modal-content');
+const modalHelp = document.getElementById('modalHelp');
+const modalContent = document.querySelector('.modal-content');
 
-  if (modalHelp && modalContent) {
-    modalHelp.addEventListener('click', function (e) {
-      if (e.target === modalHelp) {
-        closeHelp();
-      }
-    });
+if (modalHelp && modalContent) {
+  modalHelp.addEventListener('click', function (e) {
+    if (e.target === modalHelp) {
+      closeHelp();
+    }
+  });
 
-    // モーダル内クリックは閉じない
-    modalContent.addEventListener('click', function (e) {
-      e.stopPropagation();
-    });
-  }
-});
+  // モーダル内クリックは閉じない
+  modalContent.addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+}
 
 function adjustViewportHeight() {
   const vh = window.innerHeight * 0.01;
