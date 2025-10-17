@@ -1,4 +1,4 @@
-/ ページ読み込み時に受験済みチェックマークを表示
+// ページ読み込み時に受験済みチェックマークを表示
 window.addEventListener('DOMContentLoaded', () => {
   updateExamStatus();
   adjustViewportHeight();
