@@ -2,6 +2,8 @@
 window.addEventListener('DOMContentLoaded', () => {
   updateExamStatus();
   adjustViewportHeight();
+  initSlider();
+  initModalClose();
 });
 
 // 受験済みステータスを更新
@@ -110,21 +112,23 @@ const slideDescriptions = [
 const totalSlides = slideDescriptions.length;
 let currentSlide = 0;
 
-const howtoImg = document.getElementById('howtoImg');
-const slideDesc = document.getElementById('slideDesc');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const indicator = document.getElementById('indicator');
-
 function updateSlide() {
-  howtoImg.src = `Howto${currentSlide + 1}.png`;
-  slideDesc.innerHTML = slideDescriptions[currentSlide];
-  prevBtn.disabled = currentSlide === 0;
-  nextBtn.disabled = currentSlide === totalSlides - 1;
+  const howtoImg = document.getElementById('howtoImg');
+  const slideDesc = document.getElementById('slideDesc');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  
+  if (howtoImg) howtoImg.src = `Howto${currentSlide + 1}.png`;
+  if (slideDesc) slideDesc.innerHTML = slideDescriptions[currentSlide];
+  if (prevBtn) prevBtn.disabled = currentSlide === 0;
+  if (nextBtn) nextBtn.disabled = currentSlide === totalSlides - 1;
   renderIndicator();
 }
 
 function renderIndicator() {
+  const indicator = document.getElementById('indicator');
+  if (!indicator) return;
+  
   indicator.innerHTML = '';
   for (let i = 0; i < totalSlides; i++) {
     const dot = document.createElement('div');
@@ -133,38 +137,58 @@ function renderIndicator() {
   }
 }
 
-prevBtn.onclick = function() {
-  if (currentSlide > 0) { currentSlide--; updateSlide(); }
-};
-nextBtn.onclick = function() {
-  if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); }
-};
-
-function openHelp() {
-  document.getElementById('modalHelp').classList.add('show');
-  currentSlide = 0;
+function initSlider() {
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  
+  if (prevBtn) {
+    prevBtn.onclick = function() {
+      if (currentSlide > 0) { currentSlide--; updateSlide(); }
+    };
+  }
+  
+  if (nextBtn) {
+    nextBtn.onclick = function() {
+      if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); }
+    };
+  }
+  
   updateSlide();
 }
 
-function closeHelp() {
-  document.getElementById('modalHelp').classList.remove('show');
+function initModalClose() {
+  const modalHelp = document.getElementById('modalHelp');
+  const modalContent = document.querySelector('.modal-content');
+  
+  if (modalHelp && modalContent) {
+    // モーダル背景クリックで閉じる
+    modalHelp.addEventListener('click', function (e) {
+      if (e.target === modalHelp) {
+        closeHelp();
+      }
+    });
+    
+    // モーダル内クリックは閉じない
+    modalContent.addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+  }
 }
 
-// モーダル背景クリックで閉じる
-const modalHelp = document.getElementById('modalHelp');
-const modalContent = document.querySelector('.modal-content');
+function openHelp() {
+  const modal = document.getElementById('modalHelp');
+  if (modal) {
+    modal.classList.add('show');
+    currentSlide = 0;
+    updateSlide();
+  }
+}
 
-if (modalHelp && modalContent) {
-  modalHelp.addEventListener('click', function (e) {
-    if (e.target === modalHelp) {
-      closeHelp();
-    }
-  });
-
-  // モーダル内クリックは閉じない
-  modalContent.addEventListener('click', function (e) {
-    e.stopPropagation();
-  });
+function closeHelp() {
+  const modal = document.getElementById('modalHelp');
+  if (modal) {
+    modal.classList.remove('show');
+  }
 }
 
 function adjustViewportHeight() {
