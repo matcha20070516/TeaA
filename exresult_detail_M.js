@@ -64,7 +64,7 @@ if (backBtn) {
     const score = localStorage.getItem("exScore") || "0";
     const grade = getGrade(score);
     const setName = "謎検模試_M";
-    const shareUrl = `https://matcha20070516.github.io/mytestplaydate/share/grade-${grade.num}.html`;
+    const shareUrl = `https://matcha20070516.github.io/TExAM/share/grade-${grade.num}.html`;
     
     const params = new URLSearchParams({
       grade: grade.name,
