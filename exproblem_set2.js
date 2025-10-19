@@ -36,8 +36,8 @@ const answerFormats = [
 let timerInterval = null;
 
 const isLocked = () => {
-  return localStorage.getItem("ex_" + EXAM_SET_ID + "_ResultLocked") === "true" || 
-         localStorage.getItem("exResultLocked") === "true";
+  const SET_KEY = "ex_" + EXAM_SET_ID + "_";
+  return localStorage.getItem(SET_KEY + "ResultLocked") === "true";
 };
 
 const isValidFormat = (answer, format) => {
