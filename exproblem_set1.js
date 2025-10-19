@@ -31,7 +31,10 @@ let timerInterval = null;
 // 追加: このセット専用の識別子
 const EXAM_SET_ID = "謎検模試_M";
 
-const isLocked = () => localStorage.getItem("exResultLocked") === "true";
+const isLocked = () => {
+  const SET_KEY = "ex_" + EXAM_SET_ID + "_";
+  return localStorage.getItem(SET_KEY + "ResultLocked") === "true";
+};
 
 const isValidFormat = (answer, format) => {
   if (!answer || answer.trim() === "") return true;
