@@ -141,9 +141,6 @@ const loadQuestion = () => {
   const formatSpan = document.getElementById("answer-format");
   formatSpan.textContent = answerFormats[current - 1] || "";
 
-  const questionPoint = document.getElementById("question-point");
-  pointSpan.textContent = pointsPerQuestion[current - 1] || "";
-
   document.getElementById("answer").disabled = isLocked();
 
   checkCurrentAnswerFormat();
