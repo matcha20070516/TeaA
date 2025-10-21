@@ -140,6 +140,12 @@ const loadQuestion = () => {
 
   const formatSpan = document.getElementById("answer-format");
   formatSpan.textContent = answerFormats[current - 1] || "";
+  
+  // 配点を表示
+  const pointSpan = document.getElementById("question-point");
+  if (pointSpan) {
+    pointSpan.textContent = pointsPerQuestion[current - 1] + "点";
+  }
 
   document.getElementById("answer").disabled = isLocked();
 
@@ -393,4 +399,3 @@ window.onload = () => {
       document.getElementById("confirm-overlay").style.display = "none";
     };
   }
-};
