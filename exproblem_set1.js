@@ -1,4 +1,29 @@
-const total = 20;
+const loadQuestion = () => {
+  document.getElementById("question-num").textContent = `第${current}問`;
+  document.getElementById("quiz-img").src = `mq${current}.PNG`;
+  document.getElementById("answer").value = answers[current - 1] || "";
+
+  const formatSpan = document.getElementById("answer-format");
+  formatSpan.textContent = answerFormats[current - 1] || "";
+
+  document.getElementById("answer").disabled = isLocked();
+
+  checkCurrentAnswerFormat();
+
+  updateNavButtons();
+  updateChapters();
+  updateScore(); // 得点表示を更新
+  
+  // 次の問題の画像をプリロード
+  if (current < total) {
+    const nextImg = new Image();
+    nextImg.src = `mq${current + 1}.PNG`;
+  }
+  if (current > 1) {
+    const prevImg = new Image();
+    prevImg.src = `mq${current - 1}.PNG`;
+  }
+};const total = 20;
 let current = 1;
 const TOTAL_TIME = 30 * 60; // 30分（秒）
 let startTime; // 開始時刻
@@ -136,6 +161,12 @@ const loadQuestion = () => {
 
   const formatSpan = document.getElementById("answer-format");
   formatSpan.textContent = answerFormats[current - 1] || "";
+  
+  // 配点を表示
+  const pointSpan = document.getElementById("question-point");
+  if (pointSpan) {
+    pointSpan.textContent = pointsPerQuestion[current - 1] + "点";
+  }
 
   document.getElementById("answer").disabled = isLocked();
 
@@ -329,12 +360,15 @@ document.addEventListener("keydown", (e) => {
 
 window.onload = () => {
   if (isLocked()) {
+    const SET_KEY = "ex_" + EXAM_SET_ID + "_";
+    const score = localStorage.getItem(SET_KEY + "Score") || "0";
+    
     const lockNotice = document.createElement("p");
-    lockNotice.textContent = "この模試の結果は確定済みです。解答を変更できません。";
+    lockNotice.textContent = `この模試の結果は確定済みです。解答を変更できません。(得点: ${score}点)`;
     lockNotice.style.color = "red";
+    lockNotice.style.fontSize = "0.9em";
     document.querySelector(".container")?.prepend(lockNotice);
 
-    const SET_KEY = "ex_" + EXAM_SET_ID + "_";
     const elapsed = parseInt(localStorage.getItem(SET_KEY + "ElapsedTime") || "0", 10);
     const fixedTimeLeft = TOTAL_TIME - elapsed;
     const m = Math.floor(fixedTimeLeft / 60);
