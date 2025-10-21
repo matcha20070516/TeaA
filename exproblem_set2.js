@@ -142,7 +142,7 @@ const loadQuestion = () => {
   formatSpan.textContent = answerFormats[current - 1] || "";
 
   const formatSpan = document.getElementById("question-point");
-  formatSpan.textContent = answerFormats[current - 1] || "";
+  pointSpan.textContent = answerFormats[current - 1] || "";
 
   document.getElementById("answer").disabled = isLocked();
 
