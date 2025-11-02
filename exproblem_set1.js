@@ -289,7 +289,7 @@ const handleExamEnd = (message) => {
 
   alert(message);
   
-  const shareUrl = `https://matcha20070516.github.io/mytestplaydate/share/grade-${grade.num}.html`;
+  const shareUrl = `https://matcha20070516.github.io/TExAM/share/grade-${grade.num}.html`;
   
   const params = new URLSearchParams({
     grade: grade.name,
