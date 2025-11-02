@@ -51,7 +51,7 @@ function start() {
     const score = localStorage.getItem("ex_" + set + "_Score") || 
                   localStorage.getItem("exScore") || "0";
     const grade = getGrade(parseInt(score));
-    const shareUrl = `https://matcha20070516.github.io/mytestplaydate/share/grade-${grade.num}.html`;
+    const shareUrl = `https://matcha20070516.github.io/TExAM/share/grade-${grade.num}.html`;
     
     const params = new URLSearchParams({
       grade: grade.name,
@@ -103,7 +103,9 @@ function getGrade(score) {
 }
 
 const slideDescriptions = [
-  `最初に名前を入力し、模試を選んでください。`,
+  `①名前を入力しましょう。<br>
+  ②遊ぶ模試セットを選びましょう。受験済のセットには✅がつきます<br>
+  ③決定ボタンを押してルール説明を読みましょう。`,
 
   `残り時間-残り時間が0になると自動的に終了します。<br>
 問題番号-現在表示されている問題が何問目か表示しています。<br>
@@ -114,10 +116,10 @@ const slideDescriptions = [
 配点-各問題の配点が分かります。配点を見ながら問題の取捨選択をしてもいいかも。<br>
 終了ボタン-途中で全て解き終わった場合押すと結果に遷移します。`,
 
-  `途中保存にも対応しています。<br>
-全て解けたら終了ボタンを押してください。`,
-
-  `頑張ってください！`
+  `上から最初に入力した名前、受験した模試セット、あなたの得点、得点に応じた級（謎検準拠）、経過時間が表示されます。<br>
+解答詳細-各問題の解答の比較・解説リンクが見れます。<br>
+見返しボタン-終了後に問題を見ることができます。時間内に解けなかった問題を解く際に利用ください。<br>
+ホームボタン-ホームページに戻ります。続けて他の模試もどうぞ！`,
 ];
 
 const totalSlides = slideDescriptions.length;
