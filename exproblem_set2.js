@@ -6,7 +6,7 @@ let startTime; // 開始時刻
 const answers = Array(total).fill("");
 
 // このセット専用の識別子
-const EXAM_SET_ID = "謎検模試_MⅡ";
+const EXAM_SET_ID = "謎検模試_MII";
 
 // 問題ごとの配点
 const pointsPerQuestion = [
