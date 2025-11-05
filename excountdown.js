@@ -21,7 +21,7 @@ const timer = setInterval(() => {
             case '謎検模試_M':
                 targetPage = 'exproblem_set1.html';
                 break;
-            case '謎検模試_MⅡ':
+            case '謎検模試_MII':
                 targetPage = 'exproblem_set2.html';
                 break;
             case '謎検模試_set3':
