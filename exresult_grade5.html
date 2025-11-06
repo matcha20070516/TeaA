@@ -141,7 +141,7 @@
 
       // シェアリンク
       const shareUrl = params.get('shareUrl') || window.location.href;
-      const tweetText = encodeURIComponent(`『${setname}』の結果は【${score}点】で【${grade}】でした！ #謎解き #TExAM #${setname.replace(/\s/g, '')}\n${shareUrl}`);
+      const tweetText = encodeURIComponent(`『${setname}』の結果は【${score}点】で【${grade}】相当でした！ #謎解き #TExAM #${setname.replace(/\s/g, '')}\n${shareUrl}`);
       document.getElementById("share-link").href = `https://twitter.com/intent/tweet?text=${tweetText}`;
 
       // 詳細ページ遷移
