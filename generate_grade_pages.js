@@ -174,7 +174,7 @@ const template = `<!DOCTYPE html>
         localStorage.setItem("exCurrent", "1");
         const map = {
           "謎検模試_M": "exproblem_set1.html",
-          "謎検模試_MⅡ": "exproblem_set2.html",
+          "謎検模試_MII": "exproblem_set2.html",
           "謎検模試_MⅢ": "exproblem_set3.html",
         };
         window.location.href = map[setname] || "exproblem_set1.html";
