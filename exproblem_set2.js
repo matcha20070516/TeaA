@@ -1,3 +1,42 @@
+// ============================================================
+// Google Apps Script連携機能（ここから）
+// ============================================================
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxfq6x9vajKkXsK_dznsdoMdx_k3rn5P6qg0ajBeMdwMn0g__VBatmSwy52mR2_pww/exec';
+
+async function sendToGoogleSheets(answers, score, sheetName) {
+  // 送信済みチェック
+  const submittedKey = `${sheetName}_submitted`;
+  if (localStorage.getItem(submittedKey) === "true") {
+    console.log("送信済み");
+    return;
+  }
+
+  // 各問題の正誤判定
+  const results = answers.map((ans, idx) => 
+    ans === correctAnswers[idx] ? "正解" : "不正解"
+  );
+
+  const data = {
+    sheetName: sheetName,
+    results: results,
+    score: score
+  };
+
+  try {
+    await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    
+    localStorage.setItem(submittedKey, "true");
+    console.log("✅ 送信完了:", sheetName);
+  } catch (error) {
+    console.error("❌ 送信エラー:", error);
+  }
+}
+
 const total = 20;
 let current = 1;
 const TOTAL_TIME = 30 * 60; // 30分（秒）
@@ -5,10 +44,6 @@ let startTime; // 開始時刻
 
 const answers = Array(total).fill("");
 
-// このセット専用の識別子
-const EXAM_SET_ID = "謎検模試_MII";
-
-// 問題ごとの配点
 const pointsPerQuestion = [
   2, 3, 4, 5, 4,
   3, 3, 6, 4, 5,
@@ -16,8 +51,6 @@ const pointsPerQuestion = [
   8, 7, 8, 6, 10
 ];
 
-
-// 問題ごとの正解
 const correctAnswers = [
   "ぐうたら", "ごうこく", "すうしき", "こうつうひ", "もんばん",
   "はかい", "めのう", "ふはつ", "こたつ", "ゴルフ",
@@ -25,7 +58,6 @@ const correctAnswers = [
   "うせつ", "ハウス", "かいひ", "まるた", "くせ"
 ];
 
-// 問題ごとの解答形式（ここを変えれば個別設定可能）
 const answerFormats = [
   "ひらがな", "ひらがな", "ひらがな", "ひらがな", "ひらがな",
   "ひらがな", "ひらがな", "ひらがな", "ひらがな", "カタカナ",
@@ -34,6 +66,9 @@ const answerFormats = [
 ];
 
 let timerInterval = null;
+
+// 追加: このセット専用の識別子
+const EXAM_SET_ID = "謎検模試_MII";
 
 const isLocked = () => {
   const SET_KEY = "ex_" + EXAM_SET_ID + "_";
@@ -142,7 +177,7 @@ const loadQuestion = () => {
   if (pointSpan) {
     pointSpan.textContent = pointsPerQuestion[current - 1] + "点";
   }
-
+  
   const formatSpan = document.getElementById("answer-format");
   formatSpan.textContent = answerFormats[current - 1] || "";
 
@@ -156,11 +191,11 @@ const loadQuestion = () => {
   // 次の問題の画像をプリロード
   if (current < total) {
     const nextImg = new Image();
-    nextImg.src = `mq2${current + 1}.PNG`;
+    nextImg.src = `mq${current + 1}.PNG`;
   }
   if (current > 1) {
     const prevImg = new Image();
-    prevImg.src = `mq2${current - 1}.PNG`;
+    prevImg.src = `mq${current - 1}.PNG`;
   }
 };
 
@@ -272,6 +307,8 @@ const handleExamEnd = (message) => {
   localStorage.setItem("exAnswers", JSON.stringify(answers));
   localStorage.setItem("exSetName", setName);
   localStorage.setItem("exResultLocked", "true");
+
+  sendToGoogleSheets(answers, score, "謎検模試_MII");
   
   // 受験済みフラグを保存
   localStorage.setItem(`${setName}_completed`, "true");
