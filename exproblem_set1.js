@@ -1,3 +1,42 @@
+// ============================================================
+// Google Apps Script連携機能（ここから）
+// ============================================================
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxfq6x9vajKkXsK_dznsdoMdx_k3rn5P6qg0ajBeMdwMn0g__VBatmSwy52mR2_pww/exec';
+
+async function sendToGoogleSheets(answers, score, sheetName) {
+  // 送信済みチェック
+  const submittedKey = `${sheetName}_submitted`;
+  if (localStorage.getItem(submittedKey) === "true") {
+    console.log("送信済み");
+    return;
+  }
+
+  // 各問題の正誤判定
+  const results = answers.map((ans, idx) => 
+    ans === correctAnswers[idx] ? "正解" : "不正解"
+  );
+
+  const data = {
+    sheetName: sheetName,
+    results: results,
+    score: score
+  };
+
+  try {
+    await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    
+    localStorage.setItem(submittedKey, "true");
+    console.log("✅ 送信完了:", sheetName);
+  } catch (error) {
+    console.error("❌ 送信エラー:", error);
+  }
+}
+
 const total = 20;
 let current = 1;
 const TOTAL_TIME = 30 * 60; // 30分（秒）
@@ -268,6 +307,8 @@ const handleExamEnd = (message) => {
   localStorage.setItem("exAnswers", JSON.stringify(answers));
   localStorage.setItem("exSetName", setName);
   localStorage.setItem("exResultLocked", "true");
+
+  sendToGoogleSheets(answers, score, "謎検模試_M");
   
   // 受験済みフラグを保存
   localStorage.setItem(`${setName}_completed`, "true");
