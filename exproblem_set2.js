@@ -1,7 +1,7 @@
 // ============================================================
 // Google Apps Script連携機能（ここから）
 // ============================================================
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxfq6x9vajKkXsK_dznsdoMdx_k3rn5P6qg0ajBeMdwMn0g__VBatmSwy52mR2_pww/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyF7oVy1Stly1X68BdNNXcPgqGBqTFdG9NK6EIoHWJx0WoXnEnSb_xjwmNozeStBwQ/exec';
 
 async function sendToGoogleSheets(answers, score, sheetName) {
   // 送信済みチェック
